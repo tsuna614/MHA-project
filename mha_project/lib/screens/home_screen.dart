@@ -9,8 +9,13 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('HMA Application'),
       ),
-      body: Container(
-        child: Text('My App'),
+      body: Column(
+        children: [
+          Container(
+            child: Text('My App'),
+          ),
+          Text('abc'),
+        ],
       ),
     );
   }
