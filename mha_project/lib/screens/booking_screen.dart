@@ -6,8 +6,11 @@ class BookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-          children: [Text('Line 1'), SizedBox(height: 30), Text('Line 2')]),
+      child: Column(children: const [
+        Text('Line 1'),
+        SizedBox(height: 30),
+        Text('Line 2'),
+      ]),
     );
   }
 }
