@@ -6,7 +6,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Text('Settings Screen'),
+      child: const Center(
+        child: Text('Settings Screen'),
+      ),
     );
   }
 }

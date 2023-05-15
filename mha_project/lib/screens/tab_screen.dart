@@ -43,14 +43,21 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Hotel Management Application'),
-        actions: [
-          IconButton(
-              onPressed: widget.activateToken, icon: const Icon(Icons.logout))
-        ],
-      ),
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              centerTitle: false,
+              title: const Text(
+                'DASHBOARD',
+                style: TextStyle(fontSize: 30),
+              ),
+              elevation: _selectedIndex == 0 ? 0 : 3,
+              actions: [
+                IconButton(
+                    onPressed: widget.activateToken,
+                    icon: const Icon(Icons.logout))
+              ],
+            )
+          : null,
       body: chosenScreen,
       bottomNavigationBar: Theme(
         data: Theme.of(context)
