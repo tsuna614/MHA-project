@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key, required this.activateToken});
-
-  final void Function() activateToken;
+  const AuthScreen({super.key});
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -12,27 +13,61 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
   var _isLogin = true;
+  var _isLoading = false;
+
   var _enteredEmail = '';
   var _enteredPassword = '';
   var _enteredConfirmPassword = '';
 
-  void _submit() {
+  void _submit() async {
     final isValid = _form.currentState!.validate();
 
     if (!isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('test@gmail.com - 123456')));
       return;
     }
 
     _form.currentState!.save();
 
-    if (_isLogin) {
-      print(_enteredEmail);
-      print(_enteredPassword);
-      if (_enteredEmail == 'test@gmail.com' && _enteredPassword == '123456') {
-        widget.activateToken();
+    if (!_isLogin && _enteredPassword != _enteredConfirmPassword) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please re-enter confirm password.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      if (_isLogin) {
+        // log user in
+        final userCredentials = await _firebase.signInWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+        print(userCredentials);
+      } else {
+        // create new user
+        final userCredential = await _firebase.createUserWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+        print(userCredential);
       }
+    } on FirebaseAuthException catch (error) {
+      _isLoading = false;
+
+      if (error.code == 'email-already-in-use') {
+        return;
+      }
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? 'Authentication failed.'),
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -50,7 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     top: 30, bottom: 20, left: 20, right: 20),
                 width: 150,
                 child: Image.asset(
-                  'assets/images/logo.jpg',
+                  'assets/images/logo.png',
                 ),
               ),
               const SizedBox(height: 36),
@@ -112,26 +147,29 @@ class _AuthScreenState extends State<AuthScreen> {
                               },
                             ),
                           const SizedBox(height: 20),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(40),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary),
-                              onPressed: _submit,
-                              child: Text(
-                                _isLogin ? 'Log in' : 'Sign up',
-                                style: const TextStyle(fontSize: 16),
-                              )),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLogin = !_isLogin;
-                              });
-                            },
-                            child: Text(_isLogin
-                                ? 'Haven\'t got an account? Sign up.'
-                                : 'Already have an account? Log in.'),
-                          ),
+                          if (_isLoading) CircularProgressIndicator(),
+                          if (!_isLoading)
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size.fromHeight(40),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary),
+                                onPressed: _submit,
+                                child: Text(
+                                  _isLogin ? 'Log in' : 'Sign up',
+                                  style: const TextStyle(fontSize: 16),
+                                )),
+                          if (!_isLoading)
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                });
+                              },
+                              child: Text(_isLogin
+                                  ? 'Haven\'t got an account? Sign up.'
+                                  : 'Already have an account? Log in.'),
+                            ),
                         ],
                       )),
                 ),

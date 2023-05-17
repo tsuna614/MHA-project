@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mha_project/screens/loading_screen.dart';
+import 'firebase_options.dart';
+
 import 'package:mha_project/screens/auth_screen.dart';
 import 'package:mha_project/screens/tab_screen.dart';
 
@@ -16,7 +21,11 @@ final theme = ThemeData(
   textTheme: GoogleFonts.latoTextTheme(),
 );
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -28,26 +37,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _token = false;
-
-  void activateToken() {
-    setState(() {
-      _token = !_token;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hotel Management Application',
-      theme: theme,
-      home: _token
-          ? TabScreen(
-              activateToken: activateToken,
-            )
-          : AuthScreen(
-              activateToken: activateToken,
-            ),
-    );
+        title: 'Hotel Management Application',
+        theme: theme,
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingScreen();
+              }
+              if (snapshot.hasData) {
+                return const TabScreen();
+              }
+              return const AuthScreen();
+            }));
   }
 }

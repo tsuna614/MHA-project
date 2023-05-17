@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:mha_project/screens/booking_screen.dart';
 import 'package:mha_project/screens/home_screen.dart';
 import 'package:mha_project/screens/notifications_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
 
-class TabScreen extends StatefulWidget {
-  const TabScreen({super.key, required this.activateToken});
+final _firebase = FirebaseAuth.instance;
 
-  final void Function() activateToken;
+class TabScreen extends StatefulWidget {
+  const TabScreen({super.key});
 
   @override
   State<TabScreen> createState() => _TabScreenState();
@@ -53,12 +55,19 @@ class _TabScreenState extends State<TabScreen> {
               elevation: _selectedIndex == 0 ? 0 : 3,
               actions: [
                 IconButton(
-                    onPressed: widget.activateToken,
+                    onPressed: () {
+                      _firebase.signOut();
+                    },
                     icon: const Icon(Icons.logout))
               ],
             )
           : null,
       body: chosenScreen,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: Theme.of(context).colorScheme.primary),
