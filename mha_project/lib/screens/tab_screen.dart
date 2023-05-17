@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/manage_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:mha_project/screens/booking_screen.dart';
 import 'package:mha_project/screens/home_screen.dart';
 import 'package:mha_project/screens/notifications_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
+import 'package:mha_project/screens/manage_screen.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -36,41 +41,62 @@ class _TabScreenState extends State<TabScreen> {
     });
   }
 
-  Widget chosenScreen = HomeScreen();
+  Widget chosenScreen = const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Hotel Management Application'),
-      // ),
-      body: Center(
-        child: chosenScreen,
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              centerTitle: false,
+              title: const Text(
+                'DASHBOARD',
+                style: TextStyle(fontSize: 30),
+              ),
+              elevation: _selectedIndex == 0 ? 0 : 3,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      _firebase.signOut();
+                    },
+                    icon: const Icon(Icons.logout))
+              ],
+            )
+          : null,
+      body: chosenScreen,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: Theme.of(context).colorScheme.primary),
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Manage',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notification',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          child: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.business),
+                label: 'Manage',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notification',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

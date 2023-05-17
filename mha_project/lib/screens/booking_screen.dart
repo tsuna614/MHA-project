@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({super.key});
+class BookingScreen extends StatelessWidget {
+  const BookingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: const Center(
-        child: Text('Notification screen'),
+        child: Text('Booking Screen'),
       ),
     );
   }
