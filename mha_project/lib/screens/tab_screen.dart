@@ -5,6 +5,7 @@ import 'package:mha_project/screens/booking_screen.dart';
 import 'package:mha_project/screens/home_screen.dart';
 import 'package:mha_project/screens/notifications_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
+import 'package:mha_project/screens/manage_screen.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -26,7 +27,7 @@ class _TabScreenState extends State<TabScreen> {
           chosenScreen = const HomeScreen();
           break;
         case 1:
-          chosenScreen = const BookingScreen();
+          chosenScreen = const ManageScreen();
           break;
         case 2:
           chosenScreen = const NotificationsScreen();

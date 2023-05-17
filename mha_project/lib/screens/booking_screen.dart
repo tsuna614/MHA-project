@@ -6,8 +6,9 @@ class BookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: const Center(
-      child: Text('Booking Screen'),
-    ));
+      child: const Center(
+        child: Text('Booking Screen'),
+      ),
+    );
   }
 }
