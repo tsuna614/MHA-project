@@ -6,7 +6,7 @@ import 'package:mha_project/screens/loading_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:mha_project/screens/auth_screen.dart';
-import 'package:mha_project/screens/tabs_screen.dart';
+import 'package:mha_project/screens/hotel_screens/tabs_screen.dart';
 
 final theme = ThemeData(
   // useMaterial3: true,

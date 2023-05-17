@@ -13,12 +13,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
-  var _isLogin = true;
   var _isLoading = false;
 
   var _enteredEmail = '';
   var _enteredPassword = '';
-  var _enteredConfirmPassword = '';
 
   void _submit() async {
     final isValid = _form.currentState!.validate();
@@ -29,31 +27,14 @@ class _AuthScreenState extends State<AuthScreen> {
 
     _form.currentState!.save();
 
-    if (!_isLogin && _enteredPassword != _enteredConfirmPassword) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please re-enter confirm password.'),
-        ),
-      );
-      return;
-    }
-
     try {
       setState(() {
         _isLoading = true;
       });
-      if (_isLogin) {
-        // log user in
-        final userCredentials = await _firebase.signInWithEmailAndPassword(
-            email: _enteredEmail, password: _enteredPassword);
-        print(userCredentials);
-      } else {
-        // create new user
-        final userCredential = await _firebase.createUserWithEmailAndPassword(
-            email: _enteredEmail, password: _enteredPassword);
-        print(userCredential);
-      }
+      // log user in
+      final userCredentials = await _firebase.signInWithEmailAndPassword(
+          email: _enteredEmail, password: _enteredPassword);
+      print(userCredentials);
     } on FirebaseAuthException catch (error) {
       _isLoading = false;
 
@@ -75,9 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _switchToSignUp() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => SignUpForm(
-          form: _form,
-        ),
+        builder: (context) => SignUpForm(),
       ),
     );
   }
@@ -142,21 +121,6 @@ class _AuthScreenState extends State<AuthScreen> {
                               _enteredPassword = newValue!;
                             },
                           ),
-                          // if (!_isLogin)
-                          //   TextFormField(
-                          //     decoration: const InputDecoration(
-                          //         labelText: 'Confirm password'),
-                          //     obscureText: true,
-                          //     validator: (value) {
-                          //       if (value == null || value.trim().length < 6) {
-                          //         return 'Please enter a valid password';
-                          //       }
-                          //       return null;
-                          //     },
-                          //     onSaved: (newValue) {
-                          //       _enteredConfirmPassword = newValue!;
-                          //     },
-                          //   ),
                           const SizedBox(height: 20),
                           if (_isLoading) const CircularProgressIndicator(),
                           if (!_isLoading)
@@ -173,9 +137,6 @@ class _AuthScreenState extends State<AuthScreen> {
                           if (!_isLoading)
                             TextButton(
                               onPressed: () {
-                                setState(() {
-                                  _isLogin = !_isLogin;
-                                });
                                 _switchToSignUp();
                               },
                               child: const Text(
