@@ -12,12 +12,13 @@ final theme = ThemeData(
   // useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
-    seedColor: Colors.deepPurpleAccent,
+    seedColor: Color.fromARGB(255, 115, 0, 255),
   ),
   // appBarTheme: const AppBarTheme(
   //   iconTheme: IconThemeData(color: Colors.black),
   //   color: Colors.deepPurpleAccent,
   // ),
+  // primaryColor: Color.fromARGB(255, 255, 154, 38),
   textTheme: GoogleFonts.latoTextTheme(),
 );
 

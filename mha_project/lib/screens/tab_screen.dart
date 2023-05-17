@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mha_project/screens/booking_screen.dart';
 import 'package:mha_project/screens/home_screen.dart';
 import 'package:mha_project/screens/notifications_screen.dart';
+import 'package:mha_project/screens/profile_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
 import 'package:mha_project/screens/manage_screen.dart';
+import 'package:mha_project/widgets/main_drawer.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -41,6 +43,24 @@ class _TabScreenState extends State<TabScreen> {
     });
   }
 
+  void _setScreen(String identifier) {
+    Navigator.of(context).pop();
+    if (identifier == 'profile') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
+        ),
+      );
+    }
+    if (identifier == 'settings') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
+        ),
+      );
+    }
+  }
+
   Widget chosenScreen = const HomeScreen();
 
   @override
@@ -55,14 +75,13 @@ class _TabScreenState extends State<TabScreen> {
               ),
               elevation: _selectedIndex == 0 ? 0 : 3,
               actions: [
-                IconButton(
-                    onPressed: () {
-                      _firebase.signOut();
-                    },
-                    icon: const Icon(Icons.logout))
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))
               ],
             )
           : null,
+      drawer: MainDrawer(onSelectScreen: (identifier) {
+        _setScreen(identifier);
+      }),
       body: chosenScreen,
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
