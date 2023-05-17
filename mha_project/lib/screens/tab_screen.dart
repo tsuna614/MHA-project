@@ -63,11 +63,11 @@ class _TabScreenState extends State<TabScreen> {
             )
           : null,
       body: chosenScreen,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+      //   child: const Icon(Icons.add),
+      // ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: Theme.of(context).colorScheme.primary),

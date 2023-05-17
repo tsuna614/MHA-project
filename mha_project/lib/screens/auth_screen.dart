@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mha_project/widgets/signup_form.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -71,6 +72,16 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  void _switchToSignUp() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SignUpForm(
+          form: _form,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,23 +142,23 @@ class _AuthScreenState extends State<AuthScreen> {
                               _enteredPassword = newValue!;
                             },
                           ),
-                          if (!_isLogin)
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Confirm password'),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.trim().length < 6) {
-                                  return 'Please enter a valid password';
-                                }
-                                return null;
-                              },
-                              onSaved: (newValue) {
-                                _enteredConfirmPassword = newValue!;
-                              },
-                            ),
+                          // if (!_isLogin)
+                          //   TextFormField(
+                          //     decoration: const InputDecoration(
+                          //         labelText: 'Confirm password'),
+                          //     obscureText: true,
+                          //     validator: (value) {
+                          //       if (value == null || value.trim().length < 6) {
+                          //         return 'Please enter a valid password';
+                          //       }
+                          //       return null;
+                          //     },
+                          //     onSaved: (newValue) {
+                          //       _enteredConfirmPassword = newValue!;
+                          //     },
+                          //   ),
                           const SizedBox(height: 20),
-                          if (_isLoading) CircularProgressIndicator(),
+                          if (_isLoading) const CircularProgressIndicator(),
                           if (!_isLoading)
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -155,9 +166,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                     backgroundColor:
                                         Theme.of(context).colorScheme.primary),
                                 onPressed: _submit,
-                                child: Text(
-                                  _isLogin ? 'Log in' : 'Sign up',
-                                  style: const TextStyle(fontSize: 16),
+                                child: const Text(
+                                  'Log in',
+                                  style: TextStyle(fontSize: 16),
                                 )),
                           if (!_isLoading)
                             TextButton(
@@ -165,10 +176,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                 setState(() {
                                   _isLogin = !_isLogin;
                                 });
+                                _switchToSignUp();
                               },
-                              child: Text(_isLogin
-                                  ? 'Haven\'t got an account? Sign up.'
-                                  : 'Already have an account? Log in.'),
+                              child: const Text(
+                                  'Haven\'t got an account? Sign up.'),
                             ),
                         ],
                       )),
