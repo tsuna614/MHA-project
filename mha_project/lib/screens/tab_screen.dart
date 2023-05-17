@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/booking_screen.dart';
+import 'package:mha_project/screens/manage_screen.dart';
 import 'package:mha_project/screens/home_screen.dart';
 import 'package:mha_project/screens/notifications_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
@@ -22,7 +22,7 @@ class _TabScreenState extends State<TabScreen> {
           chosenScreen = const HomeScreen();
           break;
         case 1:
-          chosenScreen = const BookingScreen();
+          chosenScreen = const ManageScreen();
           break;
         case 2:
           chosenScreen = const NotificationsScreen();
@@ -41,9 +41,9 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hotel Management Application'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Hotel Management Application'),
+      // ),
       body: Center(
         child: chosenScreen,
       ),
