@@ -32,10 +32,10 @@ class _TabScreenState extends State<TabScreen> {
           chosenScreen = const ManageScreen();
           break;
         case 2:
-          chosenScreen = const NotificationsScreen();
+          chosenScreen = const BookingScreen();
           break;
         case 3:
-          chosenScreen = const SettingsScreen();
+          chosenScreen = const NotificationsScreen();
           break;
         default:
           break;
@@ -105,12 +105,12 @@ class _TabScreenState extends State<TabScreen> {
                 label: 'Manage',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Notification',
+                icon: Icon(Icons.add_business),
+                label: 'Booking',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
+                icon: Icon(Icons.notifications),
+                label: 'Notification',
               ),
             ],
             currentIndex: _selectedIndex,

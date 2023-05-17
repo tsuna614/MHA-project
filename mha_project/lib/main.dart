@@ -6,13 +6,13 @@ import 'package:mha_project/screens/loading_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:mha_project/screens/auth_screen.dart';
-import 'package:mha_project/screens/tab_screen.dart';
+import 'package:mha_project/screens/tabs_screen.dart';
 
 final theme = ThemeData(
   // useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
-    seedColor: Color.fromARGB(255, 115, 0, 255),
+    seedColor: const Color.fromARGB(255, 115, 0, 255),
   ),
   // appBarTheme: const AppBarTheme(
   //   iconTheme: IconThemeData(color: Colors.black),
