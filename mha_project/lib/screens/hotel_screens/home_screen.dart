@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mha_project/screens/loading_screen.dart';
+import 'package:mha_project/screens/temp/create_room.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -198,7 +200,17 @@ class HomeScreen extends StatelessWidget {
               ),
             ]),
           ),
-        )
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CreateRoomScreen(),
+              ),
+            );
+          },
+          child: const Text('Create'),
+        ),
       ],
     );
   }
