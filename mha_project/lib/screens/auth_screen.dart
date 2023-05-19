@@ -1,5 +1,9 @@
+// import 'package:http/http.dart' as http;
+// import 'package:mha_project/config.dart';
+// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:mha_project/widgets/signup_form.dart';
 
 final _firebase = FirebaseAuth.instance;
@@ -27,20 +31,30 @@ class _AuthScreenState extends State<AuthScreen> {
 
     _form.currentState!.save();
 
+    // var regBody = {
+    //   "email": _enteredEmail,
+    //   "password": _enteredPassword,
+    // };
+
+    // var response = await http.post(
+    //   Uri.parse(loginURL),
+    //   headers: {"Content-Type": "application/json"},
+    //   body: jsonEncode(regBody),
+    // );
+
+    // var jsonResponse = jsonDecode(response.body);
+
+    // print(jsonResponse['status']);
+
     try {
       setState(() {
         _isLoading = true;
       });
       // log user in
-      final userCredentials = await _firebase.signInWithEmailAndPassword(
+      await _firebase.signInWithEmailAndPassword(
           email: _enteredEmail, password: _enteredPassword);
-      print(userCredentials);
+      // print(userCredentials);
     } on FirebaseAuthException catch (error) {
-      _isLoading = false;
-
-      if (error.code == 'email-already-in-use') {
-        return;
-      }
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -129,7 +143,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                     minimumSize: const Size.fromHeight(40),
                                     backgroundColor:
                                         Theme.of(context).colorScheme.primary),
-                                onPressed: _submit,
+                                onPressed: () {
+                                  _submit();
+                                },
                                 child: const Text(
                                   'Log in',
                                   style: TextStyle(fontSize: 16),
