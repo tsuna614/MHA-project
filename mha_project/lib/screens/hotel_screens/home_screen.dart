@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/loading_screen.dart';
 import 'package:mha_project/screens/hotel_screens/manage_screens/create_screen.dart';
+
+final user = FirebaseAuth.instance.currentUser!;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -156,6 +158,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                Text(user.uid),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20.0, top: 20),

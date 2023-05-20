@@ -1,12 +1,10 @@
-
-
-// import 'dart:js';
-
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 // const ROOM_COLLECTION_NAME = 'rooms';
+
+final user = FirebaseAuth.instance.currentUser!;
 
 final List<String> serviceType = [
   "CLEAN UP",
@@ -153,6 +151,7 @@ class _CreateScreenState extends State<CreateScreen> {
         case 'room':
           await newRoomRef.set(
             {
+              'userId': user.uid,
               'address': enteredTextField1,
               'floor': enteredTextField2,
               'beds': enteredTextField3,
@@ -163,6 +162,7 @@ class _CreateScreenState extends State<CreateScreen> {
         case 'service':
           await newRoomRef.set(
             {
+              'userId': user.uid,
               'id': enteredTextField1,
               'name': enteredTextField2,
               'number': enteredTextField3,
@@ -174,6 +174,7 @@ class _CreateScreenState extends State<CreateScreen> {
         case 'employee':
           await newRoomRef.set(
             {
+              'userId': user.uid,
               'id': enteredTextField1,
               'name': enteredTextField2,
               'number': enteredTextField3,
@@ -184,6 +185,7 @@ class _CreateScreenState extends State<CreateScreen> {
         case 'customer':
           await newRoomRef.set(
             {
+              'userId': user.uid,
               'id': enteredTextField1,
               'name': enteredTextField2,
               'number': enteredTextField3,
