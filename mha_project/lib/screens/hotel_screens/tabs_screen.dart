@@ -6,7 +6,7 @@ import 'package:mha_project/screens/hotel_screens/home_screen.dart';
 import 'package:mha_project/screens/hotel_screens/notifications_screen.dart';
 import 'package:mha_project/screens/profile_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
-import 'package:mha_project/screens/hotel_screens/manage_screen.dart';
+import 'package:mha_project/screens/hotel_screens/manage_screens/manage_screen.dart';
 import 'package:mha_project/widgets/main_drawer.dart';
 
 final _firebase = FirebaseAuth.instance;
