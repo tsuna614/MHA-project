@@ -205,7 +205,9 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => CreateRoomScreen(),
+                builder: (context) => CreateScreen(
+                  categoryName: 'service',
+                ),
               ),
             );
           },
