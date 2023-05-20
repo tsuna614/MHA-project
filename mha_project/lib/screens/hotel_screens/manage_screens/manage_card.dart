@@ -10,9 +10,9 @@ class ManageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Color.fromARGB(222, 237, 235, 235),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color.fromARGB(128, 196, 194, 194),
               blurRadius: 4,
@@ -24,7 +24,7 @@ class ManageCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 10.0),
             child: Text(
-              '${categoryName}',
+              '${categoryName}'.toUpperCase(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25.0,

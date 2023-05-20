@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/loading_screen.dart';
-import 'package:mha_project/screens/temp/create_screen.dart';
+import 'package:mha_project/screens/hotel_screens/manage_screens/create_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
