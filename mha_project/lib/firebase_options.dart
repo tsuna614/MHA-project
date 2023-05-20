@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '132464290800',
     projectId: 'hma-project-7d7ed',
     storageBucket: 'hma-project-7d7ed.appspot.com',
-    iosClientId: '132464290800-thl6pbr59c0ibkpucm4kq1pc52b52qpb.apps.googleusercontent.com',
+    iosClientId:
+        '132464290800-thl6pbr59c0ibkpucm4kq1pc52b52qpb.apps.googleusercontent.com',
     iosBundleId: 'com.example.mhaProject',
   );
 }

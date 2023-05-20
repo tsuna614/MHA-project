@@ -1,4 +1,6 @@
-import 'dart:isolate';
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'package:mha_project/config.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,20 +41,31 @@ class _SignUpFormState extends State<SignUpForm> {
       return;
     }
 
+    // var regBody = {
+    //   "email": _enteredEmail,
+    //   "password": _enteredPassword,
+    // };
+
+    // var response = await http.post(
+    //   Uri.parse(registrationURL),
+    //   headers: {"Content-Type": "application/json"},
+    //   body: jsonEncode(regBody),
+    // );
+
+    // var jsonResponse = jsonDecode(response.body);
+
+    // print(jsonResponse['status']);
+
     try {
       setState(() {
         _isLoading = true;
       });
       // create new user
-      _firebase.createUserWithEmailAndPassword(
+      await _firebase.createUserWithEmailAndPassword(
           email: _enteredEmail, password: _enteredPassword);
-      Navigator.of(context).pop();
+      Navigator.of(context)
+          .pop(); // this line only execute when _firebase.createUser is success, otherwise it will skip this line to the FirebaseAuthException
     } on FirebaseAuthException catch (error) {
-      _isLoading = false;
-
-      if (error.code == 'email-already-in-use') {
-        return;
-      }
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -69,10 +82,10 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Sign Up'),
+      //   centerTitle: true,
+      // ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -89,7 +102,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 'Let\'s help you meet up with your tasks',
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 100),
               Card(
                 margin: const EdgeInsets.only(left: 36, right: 36),
                 shape: RoundedRectangleBorder(
@@ -164,7 +177,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 80),
             ],
           ),
         ),
