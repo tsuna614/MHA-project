@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,6 +20,7 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   int _selectedIndex = 0;
+  var _selectedScreenTitle = 'DASHBOARD';
 
   void _onItemTapped(itemIndex) {
     setState(() {
@@ -28,15 +28,19 @@ class _TabScreenState extends State<TabScreen> {
       switch (itemIndex) {
         case 0:
           chosenScreen = const HomeScreen();
+          _selectedScreenTitle = 'DASHBOARD';
           break;
         case 1:
           chosenScreen = const ManageScreen();
+          _selectedScreenTitle = 'MANAGING';
           break;
         case 2:
           chosenScreen = const BookingScreen();
+          _selectedScreenTitle = 'BOOKING';
           break;
         case 3:
           chosenScreen = const NotificationsScreen();
+          _selectedScreenTitle = 'NOTIFICATION';
           break;
         default:
           break;
@@ -67,19 +71,18 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndex == 0
-          ? AppBar(
-              centerTitle: false,
-              title: const Text(
-                'DASHBOARD',
-                style: TextStyle(fontSize: 30),
-              ),
-              elevation: _selectedIndex == 0 ? 0 : 3,
-              actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-              ],
-            )
-          : null,
+      appBar: AppBar(
+        centerTitle: _selectedIndex == 0 ? false : true,
+        title: Text(
+          _selectedScreenTitle,
+          style: TextStyle(fontSize: 30),
+        ),
+        elevation: _selectedIndex == 0 ? 0 : 3,
+        actions: [
+          if (_selectedIndex == 0)
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+        ],
+      ),
       drawer: MainDrawer(onSelectScreen: (identifier) {
         _setScreen(identifier);
       }),

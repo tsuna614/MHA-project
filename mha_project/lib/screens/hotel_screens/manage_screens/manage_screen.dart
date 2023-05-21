@@ -49,7 +49,6 @@ class _ManageScreenState extends State<ManageScreen> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
     );
   }
 }
