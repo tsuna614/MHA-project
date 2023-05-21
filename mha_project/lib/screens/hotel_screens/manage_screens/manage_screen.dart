@@ -26,7 +26,7 @@ class _ManageScreenState extends State<ManageScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
+          padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
