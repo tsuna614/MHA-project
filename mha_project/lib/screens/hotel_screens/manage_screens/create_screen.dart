@@ -6,6 +6,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 final user = FirebaseAuth.instance.currentUser!;
 
+final List<String> roomType = [
+  "SINGLE",
+  "DOUBLE",
+  "QUAD",
+  "QUEEN",
+  "KING",
+  "TWIN",
+  "STUDIO",
+  "SUITE",
+  "APARTMENT",
+  "VILLA",
+];
 final List<String> serviceType = [
   "CLEAN UP",
   "ROOM SERVICE",
@@ -13,10 +25,6 @@ final List<String> serviceType = [
   "LUGGAGE",
   "BREAKFAST",
   "TRANSPORT",
-  // DropDownValueModel(name: 'CLEAN UP', value: "CLEAN UP"),
-  // DropDownValueModel(name: 'ROOM SERVICE', value: "ROOM SERVICE"),
-  // DropDownValueModel(name: 'LUGGAGE', value: "LUGGAGE"),
-  // DropDownValueModel(name: 'BREAKFAST', value: "BREAKFAST"),
 ];
 
 class CreateScreen extends StatefulWidget {
@@ -37,7 +45,8 @@ class _CreateScreenState extends State<CreateScreen> {
 
   final _textField4Controller = TextEditingController();
 
-  var _selectedType = serviceType[0];
+  var _selectedRoomType = roomType[0];
+  var _selectedServiceType = serviceType[0];
 
   bool isTextFieldNumberValid(String text) {
     if (double.tryParse(text) == null) {
@@ -155,7 +164,8 @@ class _CreateScreenState extends State<CreateScreen> {
               'address': enteredTextField1,
               'floor': enteredTextField2,
               'beds': enteredTextField3,
-              'price': enteredTextField4
+              'price': enteredTextField4,
+              'type': _selectedRoomType,
             },
           );
           break;
@@ -167,7 +177,7 @@ class _CreateScreenState extends State<CreateScreen> {
               'name': enteredTextField2,
               'number': enteredTextField3,
               'price': enteredTextField4,
-              'type': _selectedType
+              'type': _selectedServiceType,
             },
           );
           break;
@@ -450,22 +460,33 @@ class _CreateScreenState extends State<CreateScreen> {
                           //onSubmitted :
                         ),
                       ),
-                      if (widget.categoryName == 'service')
+                      if (widget.categoryName == 'room' ||
+                          widget.categoryName == 'service')
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 30, right: 30),
                             child: DropdownButton(
-                              value: _selectedType,
-                              items: serviceType
-                                  .map((data) => DropdownMenuItem(
-                                      value: data, child: Text(data)))
-                                  .toList(),
+                              value: widget.categoryName == 'room'
+                                  ? _selectedRoomType
+                                  : _selectedServiceType,
+                              items: widget.categoryName == 'room'
+                                  ? roomType
+                                      .map((data) => DropdownMenuItem(
+                                          value: data, child: Text(data)))
+                                      .toList()
+                                  : serviceType
+                                      .map((data) => DropdownMenuItem(
+                                          value: data, child: Text(data)))
+                                      .toList(),
                               onChanged: (value) {
                                 if (value == null) {
                                   return;
                                 }
                                 setState(() {
-                                  _selectedType = value;
+                                  if (widget.categoryName == 'room')
+                                    _selectedRoomType = value;
+                                  else
+                                    _selectedServiceType = value;
                                 });
                               },
                               // style: ,
