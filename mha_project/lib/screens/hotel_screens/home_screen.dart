@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       height: 125.0,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.primaryContainer,
                       ),
                     ),
                     Container(

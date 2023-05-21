@@ -75,8 +75,10 @@ class _TabScreenState extends State<TabScreen> {
         centerTitle: _selectedIndex == 0 ? false : true,
         title: Text(
           _selectedScreenTitle,
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(
+              fontSize: 30, letterSpacing: 5.0, fontWeight: FontWeight.bold),
         ),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: _selectedIndex == 0 ? 0 : 3,
         actions: [
           if (_selectedIndex == 0)

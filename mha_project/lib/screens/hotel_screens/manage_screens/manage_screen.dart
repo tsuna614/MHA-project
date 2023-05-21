@@ -12,18 +12,18 @@ class _ManageScreenState extends State<ManageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'MANAGING',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30.0,
-            letterSpacing: 5.0,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.lightBlue[200],
-      ),
+      // appBar: AppBar(
+      //   //   title: const Text(
+      //   //     'MANAGING',
+      //   //     style: TextStyle(
+      //   //       fontWeight: FontWeight.bold,
+      //   //       fontSize: 30.0,
+      //   //       letterSpacing: 5.0,
+      //   //     ),
+      //   //   ),
+      //   //   centerTitle: true,
+      //   //   backgroundColor: Colors.lightBlue[200],
+      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
