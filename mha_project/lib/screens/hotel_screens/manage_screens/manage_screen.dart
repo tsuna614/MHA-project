@@ -19,22 +19,22 @@ class _ManageScreenState extends State<ManageScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ManageCard(
-              categoryName: 'room',
+              categoryName: 'ROOM',
               categoryImage: Image.asset('assets/images/room.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'service',
+              categoryName: 'SERVICE',
               categoryImage: Image.asset('assets/images/service.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'employee',
+              categoryName: 'EMPLOYEE',
               categoryImage: Image.asset('assets/images/employee.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'customer',
+              categoryName: 'CUSTOMER',
               categoryImage: Image.asset('assets/images/customer.jpg'),
             ),
           ],
