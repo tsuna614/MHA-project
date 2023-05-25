@@ -255,7 +255,7 @@ class _CreateScreenState extends State<CreateScreen> {
       textField1HintText = 'Room\'s address';
       textField2HintText = 'Room\'s floor';
       textField3HintText = 'Number of beds';
-      textField4HintText = 'Room\'s price (per night)';
+      textField4HintText = 'Room\'s price';
       textField1Icon = Icons.door_back_door;
       textField2Icon = Icons.stairs;
       textField3Icon = Icons.bed;
