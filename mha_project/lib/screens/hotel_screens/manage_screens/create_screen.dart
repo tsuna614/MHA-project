@@ -84,7 +84,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
     var errorMessage;
 
-    if (widget.categoryName == 'ROOM') {
+    if (widget.categoryName == 'room') {
       if (enteredTextField1.trim().isEmpty) {
         errorMessage = 'Room\'s address must not be empty.';
       } else if (enteredTextField2.trim().isEmpty ||
@@ -97,7 +97,7 @@ class _CreateScreenState extends State<CreateScreen> {
           !isTextFieldNumberValid(enteredTextField4)) {
         errorMessage = 'Room\'s price must be a valid number.';
       }
-    } else if (widget.categoryName == 'SERVICE') {
+    } else if (widget.categoryName == 'service') {
       if (enteredTextField1.trim().isEmpty) {
         errorMessage = 'Service\'s ID must not be empty.';
       } else if (enteredTextField2.trim().isEmpty) {
@@ -108,7 +108,7 @@ class _CreateScreenState extends State<CreateScreen> {
           !isTextFieldNumberValid(enteredTextField4)) {
         errorMessage = 'Service\'s price must be a valid number.';
       }
-    } else if (widget.categoryName == 'EMPLOYEE') {
+    } else if (widget.categoryName == 'employee') {
       if (enteredTextField1.trim().isEmpty) {
         errorMessage = 'Employee\'s ID must not be empty.';
       } else if (enteredTextField2.trim().isEmpty) {
@@ -157,7 +157,7 @@ class _CreateScreenState extends State<CreateScreen> {
       // String newUserID = newRoomRef.id;
       // print(newUserID);
       switch (widget.categoryName) {
-        case 'ROOM':
+        case 'room':
           await newRoomRef.set(
             {
               'userId': user.uid,
@@ -169,7 +169,7 @@ class _CreateScreenState extends State<CreateScreen> {
             },
           );
           break;
-        case 'SERVICE':
+        case 'service':
           await newRoomRef.set(
             {
               'userId': user.uid,
@@ -181,7 +181,7 @@ class _CreateScreenState extends State<CreateScreen> {
             },
           );
           break;
-        case 'EMPLOYEE':
+        case 'employee':
           await newRoomRef.set(
             {
               'userId': user.uid,
@@ -192,7 +192,7 @@ class _CreateScreenState extends State<CreateScreen> {
             },
           );
           break;
-        case 'CUSTOMER':
+        case 'customer':
           await newRoomRef.set(
             {
               'userId': user.uid,
@@ -209,16 +209,16 @@ class _CreateScreenState extends State<CreateScreen> {
       if (context.mounted) {
         var successMessage = '';
         switch (widget.categoryName) {
-          case 'ROOM':
+          case 'room':
             successMessage = 'Successfully created a new room';
             break;
-          case 'SERVICE':
+          case 'service':
             successMessage = 'Successfully created a new service';
             break;
-          case 'EMPLOYEE':
+          case 'employee':
             successMessage = 'Successfully created a new employee';
             break;
-          case 'CUSTOMER':
+          case 'customer':
             successMessage = 'Successfully created a new customer';
             break;
         }
@@ -250,7 +250,7 @@ class _CreateScreenState extends State<CreateScreen> {
     var textField3Icon;
     var textField4Icon;
 
-    if (widget.categoryName == 'ROOM') {
+    if (widget.categoryName == 'room') {
       appBarTitle = 'CREATE ROOM';
       textField1HintText = 'Room\'s address';
       textField2HintText = 'Room\'s floor';
@@ -260,7 +260,7 @@ class _CreateScreenState extends State<CreateScreen> {
       textField2Icon = Icons.stairs;
       textField3Icon = Icons.bed;
       textField4Icon = Icons.attach_money;
-    } else if (widget.categoryName == 'SERVICE') {
+    } else if (widget.categoryName == 'service') {
       appBarTitle = 'CREATE SERVICE';
       textField1HintText = 'Service\'s ID';
       textField2HintText = 'Service\'s name';
@@ -270,7 +270,7 @@ class _CreateScreenState extends State<CreateScreen> {
       textField2Icon = Icons.work;
       textField3Icon = Icons.phone;
       textField4Icon = Icons.attach_money;
-    } else if (widget.categoryName == 'EMPLOYEE') {
+    } else if (widget.categoryName == 'employee') {
       appBarTitle = 'CREATE EMPLOYEE';
       textField1HintText = 'Employee\'s ID';
       textField2HintText = 'Employee\'s fullname';
@@ -320,11 +320,11 @@ class _CreateScreenState extends State<CreateScreen> {
                     padding: const EdgeInsets.only(left: 30),
                     child: Text(
                       (() {
-                        if (widget.categoryName == 'ROOM') {
+                        if (widget.categoryName == 'room') {
                           return 'Room\'s detail';
-                        } else if (widget.categoryName == 'SERVICE') {
+                        } else if (widget.categoryName == 'service') {
                           return 'Service\'s detail';
-                        } else if (widget.categoryName == 'EMPLOYEE') {
+                        } else if (widget.categoryName == 'employee') {
                           return 'Employee\'s detail';
                         }
                         return 'Customer\'s detail';
@@ -368,7 +368,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   const SizedBox(height: 30),
                   TextField(
                     controller: _textField2Controller,
-                    keyboardType: widget.categoryName == 'ROOM'
+                    keyboardType: widget.categoryName == 'room'
                         ? TextInputType.number
                         : TextInputType.text,
                     decoration: InputDecoration(
@@ -398,7 +398,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   const SizedBox(height: 30),
                   TextField(
                     controller: _textField3Controller,
-                    keyboardType: widget.categoryName == 'ROOM'
+                    keyboardType: widget.categoryName == 'room'
                         ? TextInputType.number
                         : TextInputType.text,
                     decoration: InputDecoration(
@@ -430,8 +430,8 @@ class _CreateScreenState extends State<CreateScreen> {
                       Expanded(
                         child: TextField(
                           controller: _textField4Controller,
-                          keyboardType: widget.categoryName == 'ROOM' ||
-                                  widget.categoryName == 'SERVICE'
+                          keyboardType: widget.categoryName == 'room' ||
+                                  widget.categoryName == 'service'
                               ? TextInputType.number
                               : TextInputType.emailAddress,
                           decoration: InputDecoration(
@@ -460,16 +460,16 @@ class _CreateScreenState extends State<CreateScreen> {
                           //onSubmitted :
                         ),
                       ),
-                      if (widget.categoryName == 'ROOM' ||
-                          widget.categoryName == 'SERVICE')
+                      if (widget.categoryName == 'room' ||
+                          widget.categoryName == 'service')
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 30, right: 30),
                             child: DropdownButton(
-                              value: widget.categoryName == 'ROOM'
+                              value: widget.categoryName == 'room'
                                   ? _selectedRoomType
                                   : _selectedServiceType,
-                              items: widget.categoryName == 'ROOM'
+                              items: widget.categoryName == 'room'
                                   ? roomType
                                       .map((data) => DropdownMenuItem(
                                           value: data, child: Text(data)))
@@ -483,7 +483,7 @@ class _CreateScreenState extends State<CreateScreen> {
                                   return;
                                 }
                                 setState(() {
-                                  if (widget.categoryName == 'ROOM')
+                                  if (widget.categoryName == 'room')
                                     _selectedRoomType = value;
                                   else
                                     _selectedServiceType = value;
