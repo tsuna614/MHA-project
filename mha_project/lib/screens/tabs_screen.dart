@@ -78,7 +78,7 @@ class _TabScreenState extends State<TabScreen> {
           style: TextStyle(
               fontSize: 30, letterSpacing: 5.0, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: _selectedIndex == 0 ? 0 : 3,
         actions: [
           if (_selectedIndex == 0)

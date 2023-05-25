@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       height: 125.0,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                     Container(
@@ -158,7 +158,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(user.uid),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20.0, top: 20),
@@ -206,54 +205,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ]),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CreateScreen(
-                    categoryName: 'room',
-                  ),
-                ),
-              );
-            },
-            child: const Text('Create'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CreateScreen(
-                    categoryName: 'service',
-                  ),
-                ),
-              );
-            },
-            child: const Text('Create'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CreateScreen(
-                    categoryName: 'employee',
-                  ),
-                ),
-              );
-            },
-            child: const Text('Create'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CreateScreen(
-                    categoryName: 'customer',
-                  ),
-                ),
-              );
-            },
-            child: const Text('Create'),
           ),
         ],
       ),

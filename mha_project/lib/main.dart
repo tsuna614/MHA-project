@@ -12,7 +12,7 @@ final theme = ThemeData(
   // useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
-    seedColor: Colors.orange.shade300,
+    seedColor: Color.fromARGB(255, 15, 99, 255),
   ),
   // appBarTheme: const AppBarTheme(
   //   iconTheme: IconThemeData(color: Colors.black),

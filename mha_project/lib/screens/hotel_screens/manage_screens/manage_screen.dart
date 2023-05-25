@@ -13,28 +13,28 @@ class _ManageScreenState extends State<ManageScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 30.0),
+        padding: EdgeInsets.fromLTRB(0, 20.0, 0, 30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ManageCard(
-              categoryName: 'ROOM',
+              categoryName: 'room',
               categoryImage: Image.asset('assets/images/room.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'SERVICE',
+              categoryName: 'service',
               categoryImage: Image.asset('assets/images/service.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'EMPLOYEE',
+              categoryName: 'employee',
               categoryImage: Image.asset('assets/images/employee.jpg'),
             ),
             SizedBox(height: 40.0),
             ManageCard(
-              categoryName: 'CUSTOMER',
+              categoryName: 'customer',
               categoryImage: Image.asset('assets/images/customer.jpg'),
             ),
           ],
