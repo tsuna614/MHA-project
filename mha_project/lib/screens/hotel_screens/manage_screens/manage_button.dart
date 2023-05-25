@@ -21,7 +21,7 @@ class ManageButton extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => viewScreen(categoryName: categoryName)));
+              builder: (context) => ViewScreen(categoryName: categoryName)));
     }
   }
 
