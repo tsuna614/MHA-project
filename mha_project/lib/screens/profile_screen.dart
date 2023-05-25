@@ -110,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
             thickness: 3,
           ),
           Text(
-            'Hotel' ' Information',
+            'Hotel\'s' ' Information',
             style: TextStyle(
               // fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -128,7 +128,7 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   children: const [
                     Text(
-                      'Hotel name      :',
+                      'Hotel\'s name      :',
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -148,7 +148,7 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   children: const [
                     Text(
-                      'Hotel address:',
+                      'Hotel\'s address:',
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class ProfileScreen extends StatelessWidget {
                 Row(
                   children: const [
                     Text(
-                      'Hotel room      :',
+                      'Hotel\'s room      :',
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
