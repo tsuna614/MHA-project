@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mha_project/screens/hotel_screens/manage_screens/view_card.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
 
@@ -38,7 +39,14 @@ class ViewScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final data = loadedData[index].data();
                 return Column(
-                  children: [Text(data['address']), Text(data['price'])],
+                  children: [
+                    ViewCard(
+                        address: data['address'],
+                        beds: data['beds'],
+                        floor: data['floor'],
+                        price: data['price'],
+                        type: data['type'])
+                  ],
                 );
               });
         },
