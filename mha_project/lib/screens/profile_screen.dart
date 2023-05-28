@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mha_project/widgets/main_drawer.dart';
 import 'package:mha_project/widgets/my_flutter_app_icons.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.setScreen});
+
+  final void Function(String identifier) setScreen;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.black,
-        ),
+        iconTheme: IconThemeData(color: Colors.black),
         title: const Text(
-          'Profile',
+          'Hotel\'s profile',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30.0,
@@ -32,12 +33,18 @@ class ProfileScreen extends StatelessWidget {
         ],
         backgroundColor: Colors.white,
       ),
+      drawer: MainDrawer(
+        onSelectScreen: (identifier) {
+          setScreen(identifier);
+        },
+        selectedMainScreen: 1,
+      ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0.0),
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
                 radius: 55.0,

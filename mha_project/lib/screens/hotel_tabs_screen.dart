@@ -9,10 +9,10 @@ import 'package:mha_project/screens/settings_screen.dart';
 import 'package:mha_project/screens/hotel_screens/manage_screens/manage_screen.dart';
 import 'package:mha_project/widgets/main_drawer.dart';
 
-final _firebase = FirebaseAuth.instance;
-
 class TabScreen extends StatefulWidget {
-  const TabScreen({super.key});
+  const TabScreen({super.key, required this.changeTitle});
+
+  final void Function(int selectedIndex) changeTitle;
 
   @override
   State<TabScreen> createState() => _TabScreenState();
@@ -28,18 +28,22 @@ class _TabScreenState extends State<TabScreen> {
       switch (itemIndex) {
         case 0:
           chosenScreen = const HomeScreen();
+          widget.changeTitle(0);
           _selectedScreenTitle = 'DASHBOARD';
           break;
         case 1:
           chosenScreen = const ManageScreen();
+          widget.changeTitle(1);
           _selectedScreenTitle = 'MANAGING';
           break;
         case 2:
           chosenScreen = const BookingScreen();
+          widget.changeTitle(2);
           _selectedScreenTitle = 'BOOKING';
           break;
         case 3:
           chosenScreen = const NotificationsScreen();
+          widget.changeTitle(3);
           _selectedScreenTitle = 'NOTIFICATION';
           break;
         default:
@@ -48,55 +52,15 @@ class _TabScreenState extends State<TabScreen> {
     });
   }
 
-  void _setScreen(String identifier) {
-    Navigator.of(context).pop();
-    if (identifier == 'profile') {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
-        ),
-      );
-    }
-    if (identifier == 'settings') {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const SettingsScreen(),
-        ),
-      );
-    }
-  }
-
   Widget chosenScreen = const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: _selectedIndex == 0 ? false : true,
-        title: Text(
-          _selectedScreenTitle,
-          style: TextStyle(
-              fontSize: 30, letterSpacing: 5.0, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        elevation: _selectedIndex == 0 ? 0 : 3,
-        actions: [
-          if (_selectedIndex == 0)
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-        ],
-      ),
-      drawer: MainDrawer(onSelectScreen: (identifier) {
-        _setScreen(identifier);
-      }),
       body: chosenScreen,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
-      //   child: const Icon(Icons.add),
-      // ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
-            .copyWith(canvasColor: Theme.of(context).colorScheme.primary),
+            .copyWith(canvasColor: Theme.of(context).primaryColor),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),

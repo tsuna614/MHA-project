@@ -10,7 +10,11 @@ class ViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('VIEW $categoryName'.toUpperCase())),
+      appBar: AppBar(
+        title: Text('VIEW $categoryName'.toUpperCase()),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+      ),
       body: StreamBuilder(
         stream: firestoreRef.collection('room').snapshots(),
         builder: (context, snapshots) {

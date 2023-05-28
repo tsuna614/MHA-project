@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 final _firebase = FirebaseAuth.instance;
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key, required this.onSelectScreen});
+  const MainDrawer(
+      {super.key,
+      required this.onSelectScreen,
+      required this.selectedMainScreen});
 
   final void Function(String identifier) onSelectScreen;
+
+  final int selectedMainScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -20,72 +25,82 @@ class MainDrawer extends StatelessWidget {
             //   Theme.of(context).colorScheme.primaryContainer,
             //   Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
             // ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                    ),
-                  ),
-                ],
+            // decoration: BoxDecoration(
+            //     color: Theme.of(context).colorScheme.primaryContainer),
+            child: Column(
+              children: const [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
+                  radius: 55.0,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            color: selectedMainScreen == 0
+                ? Theme.of(context).primaryColor.withOpacity(0.1)
+                : null,
+            child: ListTile(
+              leading: Icon(
+                Icons.hotel,
+                size: 26,
+                color: Colors.black,
               ),
-            ]),
+              title: Text(
+                'Hotel',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+              ),
+              onTap: () {
+                onSelectScreen('hotel');
+              },
+            ),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.hotel,
-              size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+          Container(
+            color: selectedMainScreen == 1
+                ? Theme.of(context).primaryColor.withOpacity(0.1)
+                : null,
+            child: ListTile(
+              leading: Icon(
+                Icons.person,
+                size: 26,
+                color: Colors.black,
+              ),
+              title: Text(
+                'Profile',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+              ),
+              onTap: () {
+                onSelectScreen('profile');
+              },
             ),
-            title: Text(
-              'Hotel',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24,
-                  ),
-            ),
-            onTap: () {
-              onSelectScreen('hotel');
-            },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+          Container(
+            color: selectedMainScreen == 2
+                ? Theme.of(context).primaryColor.withOpacity(0.1)
+                : null,
+            child: ListTile(
+              leading: Icon(
+                Icons.settings,
+                size: 26,
+                color: Colors.black,
+              ),
+              title: Text(
+                'Settings',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+              ),
+              onTap: () {
+                onSelectScreen('settings');
+              },
             ),
-            title: Text(
-              'Profile',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24,
-                  ),
-            ),
-            onTap: () {
-              onSelectScreen('profile');
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.settings,
-              size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Settings',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 24,
-                  ),
-            ),
-            onTap: () {
-              onSelectScreen('settings');
-            },
           ),
           Expanded(
             child: Container(),
