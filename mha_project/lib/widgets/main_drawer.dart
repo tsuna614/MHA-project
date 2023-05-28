@@ -17,23 +17,37 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DrawerHeader(
-            padding: const EdgeInsets.all(20),
-            // decoration: BoxDecoration(
-            //     gradient: LinearGradient(colors: [
-            //   Theme.of(context).colorScheme.primaryContainer,
-            //   Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
-            // ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-            // decoration: BoxDecoration(
-            //     color: Theme.of(context).colorScheme.primaryContainer),
-            child: Column(
-              children: const [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
-                  radius: 55.0,
-                ),
-              ],
+          SizedBox(
+            height: 260,
+            child: DrawerHeader(
+              padding: const EdgeInsets.all(20),
+              // decoration: BoxDecoration(
+              //     gradient: LinearGradient(colors: [
+              //   Theme.of(context).colorScheme.primaryContainer,
+              //   Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
+              // ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+              // decoration: BoxDecoration(
+              //     color: Theme.of(context).colorScheme.primaryContainer),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  CircleAvatar(
+                    backgroundImage:
+                        AssetImage('assets/images/hotel_avatar.jpg'),
+                    radius: 50.0,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Nhat Tan Hotel',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text('nhattan19@gmail.com'),
+                ],
+              ),
             ),
           ),
           Container(
