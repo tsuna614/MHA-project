@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/hotel_screens/manage_screens/manage_card.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/manage_card.dart';
 
 class ManageScreen extends StatefulWidget {
   const ManageScreen({super.key});

@@ -3,22 +3,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mha_project/screens/loading_screen.dart';
+import 'package:mha_project/screens/main_screen.dart';
 import 'firebase_options.dart';
 
 import 'package:mha_project/screens/auth_screen.dart';
-import 'package:mha_project/screens/tabs_screen.dart';
+import 'package:mha_project/screens/hotel_tabs_screen.dart';
+
+// final theme = ThemeData(
+//   // useMaterial3: true,
+//   colorScheme: ColorScheme.fromSeed(
+//     brightness: Brightness.light,
+//     seedColor: Color.fromARGB(255, 15, 99, 255),
+//   ),
+//   // appBarTheme: const AppBarTheme(
+//   //   iconTheme: IconThemeData(color: Colors.black),
+//   //   color: Colors.deepPurpleAccent,
+//   // ),
+//   // primaryColor: Color.fromARGB(255, 255, 154, 38),
+//   textTheme: GoogleFonts.latoTextTheme(),
+// );
 
 final theme = ThemeData(
-  // useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    brightness: Brightness.light,
-    seedColor: Color.fromARGB(255, 15, 99, 255),
-  ),
-  // appBarTheme: const AppBarTheme(
-  //   iconTheme: IconThemeData(color: Colors.black),
-  //   color: Colors.deepPurpleAccent,
+  brightness: Brightness.light,
+  primaryColor: Color.fromARGB(255, 255, 123, 29),
+
+  // fontFamily: 'Georgia',
+  // textTheme: const TextTheme(
+  //   displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+  //   titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+  //   bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
   // ),
-  // primaryColor: Color.fromARGB(255, 255, 154, 38),
+
   textTheme: GoogleFonts.latoTextTheme(),
 );
 
@@ -50,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                 return const LoadingScreen();
               }
               if (snapshot.hasData) {
-                return const TabScreen();
+                return const MainScreen();
               }
               return const AuthScreen();
             }));

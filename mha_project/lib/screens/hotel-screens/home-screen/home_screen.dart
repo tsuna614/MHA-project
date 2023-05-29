@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/hotel_screens/manage_screens/create_screen.dart';
 
 final user = FirebaseAuth.instance.currentUser!;
 
@@ -12,42 +11,6 @@ class HomeScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // GridView.count(
-          //   padding: const EdgeInsets.all(16),
-          //   mainAxisSpacing: 16,
-          //   crossAxisSpacing: 16,
-          //   crossAxisCount: 2,
-          //   children: [
-          //     Container(
-          //       decoration: const BoxDecoration(
-          //           color: Colors.red,
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(20),
-          //           )),
-          //     ),
-          //     Container(
-          //       decoration: const BoxDecoration(
-          //           color: Colors.orange,
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(20),
-          //           )),
-          //     ),
-          //     Container(
-          //       decoration: const BoxDecoration(
-          //           color: Colors.purple,
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(20),
-          //           )),
-          //     ),
-          //     Container(
-          //       decoration: const BoxDecoration(
-          //           color: Colors.yellow,
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(20),
-          //           )),
-          //     ),
-          //   ],
-          // ),
           SingleChildScrollView(
             child: Container(
               color: Colors.white,
@@ -59,7 +22,7 @@ class HomeScreen extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       height: 125.0,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     Container(

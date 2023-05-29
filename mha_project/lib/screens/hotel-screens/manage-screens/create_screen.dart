@@ -299,6 +299,8 @@ class _CreateScreenState extends State<CreateScreen> {
         title: Text(
           appBarTitle,
         ),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
       ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -332,7 +334,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).primaryColor),
                     ),
                   ),
                   const SizedBox(height: 50),
@@ -351,8 +353,8 @@ class _CreateScreenState extends State<CreateScreen> {
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20.0)),
                       ),
@@ -380,8 +382,8 @@ class _CreateScreenState extends State<CreateScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20.0)),
                       ),
@@ -410,8 +412,8 @@ class _CreateScreenState extends State<CreateScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20.0)),
                       ),
@@ -445,7 +447,7 @@ class _CreateScreenState extends State<CreateScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary),
+                                  color: Theme.of(context).primaryColor),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20.0)),
                             ),
@@ -502,8 +504,7 @@ class _CreateScreenState extends State<CreateScreen> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(40),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                          backgroundColor: Theme.of(context).primaryColor,
                         ),
                         onPressed: () {
                           _submitCreateRoom(context);
