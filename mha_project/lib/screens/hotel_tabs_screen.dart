@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:mha_project/screens/hotel-screens/booking_screen.dart';
-import 'package:mha_project/screens/hotel-screens/home_screen.dart';
-import 'package:mha_project/screens/hotel-screens/notifications_screen.dart';
-import 'package:mha_project/screens/profile_screen.dart';
-import 'package:mha_project/screens/settings_screen.dart';
+import 'package:mha_project/screens/hotel-screens/booking-screen/booking_screen.dart';
+import 'package:mha_project/screens/hotel-screens/home-screen/home_screen.dart';
+import 'package:mha_project/screens/hotel-screens/notification-screen/notifications_screen.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/manage_screen.dart';
-import 'package:mha_project/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key, required this.changeTitle});
 
+  // call a function in main_screen.dart and passes an index to it to switch appBar's title
   final void Function(int selectedIndex) changeTitle;
 
   @override
@@ -20,7 +17,6 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   int _selectedIndex = 0;
-  var _selectedScreenTitle = 'DASHBOARD';
 
   void _onItemTapped(itemIndex) {
     setState(() {
@@ -29,22 +25,18 @@ class _TabScreenState extends State<TabScreen> {
         case 0:
           chosenScreen = const HomeScreen();
           widget.changeTitle(0);
-          _selectedScreenTitle = 'DASHBOARD';
           break;
         case 1:
           chosenScreen = const ManageScreen();
           widget.changeTitle(1);
-          _selectedScreenTitle = 'MANAGING';
           break;
         case 2:
           chosenScreen = const BookingScreen();
           widget.changeTitle(2);
-          _selectedScreenTitle = 'BOOKING';
           break;
         case 3:
           chosenScreen = const NotificationsScreen();
           widget.changeTitle(3);
-          _selectedScreenTitle = 'NOTIFICATION';
           break;
         default:
           break;
