@@ -18,38 +18,55 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   int _selectedIndex = 0;
 
-  void _onItemTapped(itemIndex) {
-    setState(() {
-      _selectedIndex = itemIndex;
-      switch (itemIndex) {
-        case 0:
-          chosenScreen = const HomeScreen();
-          widget.changeTitle(0);
-          break;
-        case 1:
-          chosenScreen = const ManageScreen();
-          widget.changeTitle(1);
-          break;
-        case 2:
-          chosenScreen = const BookingScreen();
-          widget.changeTitle(2);
-          break;
-        case 3:
-          chosenScreen = const NotificationsScreen();
-          widget.changeTitle(3);
-          break;
-        default:
-          break;
-      }
-    });
-  }
+  // void _onItemTapped(itemIndex) {
+  //   setState(() {
+  //     _selectedIndex = itemIndex;
+  //     switch (itemIndex) {
+  //       case 0:
+  //         chosenScreen = const HomeScreen();
+  //         widget.changeTitle(0);
+  //         break;
+  //       case 1:
+  //         chosenScreen = const ManageScreen();
+  //         widget.changeTitle(1);
+  //         break;
+  //       case 2:
+  //         chosenScreen = const BookingScreen();
+  //         widget.changeTitle(2);
+  //         break;
+  //       case 3:
+  //         chosenScreen = const NotificationsScreen();
+  //         widget.changeTitle(3);
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   });
+  // }
+
+  var _pages = [
+    HomeScreen(),
+    ManageScreen(),
+    BookingScreen(),
+    NotificationsScreen()
+  ];
+  var _pageController = PageController();
 
   Widget chosenScreen = const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: chosenScreen,
+      body: PageView(
+        children: _pages,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          widget.changeTitle(index);
+        },
+        controller: _pageController,
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: Theme.of(context).primaryColor),
@@ -76,7 +93,15 @@ class _TabScreenState extends State<TabScreen> {
               ),
             ],
             currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+                _pageController.animateToPage(_selectedIndex,
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.linear);
+                widget.changeTitle(index);
+              });
+            },
           ),
         ),
       ),
