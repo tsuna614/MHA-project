@@ -12,7 +12,7 @@ class ViewScreen extends StatelessWidget {
     double AppbarHeight = AppBar().preferredSize.height;
     double ScreenHeight = MediaQuery.of(context).size.height;
     double showBottomSheetHeight = ScreenHeight - AppbarHeight;
-
+    print(ScreenHeight);
     return Scaffold(
       appBar: AppBar(
         title: Text('VIEW $categoryName'.toUpperCase()),
@@ -46,6 +46,7 @@ class ViewScreen extends StatelessWidget {
               itemCount: loadedData.length,
               itemBuilder: (context, index) {
                 final data = loadedData[index].data();
+                final docId = loadedData[index].id;
                 return Column(
                   children: [
                     ViewCard(
@@ -55,6 +56,8 @@ class ViewScreen extends StatelessWidget {
                       price: data['price'],
                       type: data['type'],
                       showBottomSheetHeight: showBottomSheetHeight,
+                      userId: data['userId'],
+                      docId: docId,
                     )
                   ],
                 );

@@ -233,6 +233,7 @@ class _CreateScreenState extends State<CreateScreen> {
         _textField3Controller.clear();
         _textField4Controller.clear();
       } // show SnackBar that room was created successfully and clear the TextField
+      FocusScope.of(context).unfocus();
     } on FirebaseAuthException catch (error) {
       print(error);
     }
