@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/hotel_screens/manage_screens/manage_button.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/manage_button.dart';
 
 class ManageCard extends StatelessWidget {
   const ManageCard(
@@ -46,14 +46,25 @@ class ManageCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ManageButton(
-                        buttonName: 'Create',
-                        categoryName: categoryName,
-                        buttonColor: Color.fromARGB(255, 105, 156, 252)),
-                    ManageButton(
-                      buttonName: 'View',
-                      categoryName: categoryName,
-                      buttonColor: Color.fromARGB(255, 107, 204, 253),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                        child: ManageButton(
+                          buttonName: 'Create',
+                          categoryName: categoryName,
+                          buttonColor: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                        child: ManageButton(
+                          buttonName: 'View',
+                          categoryName: categoryName,
+                          buttonColor: Color.fromARGB(255, 115, 208, 255),
+                        ),
+                      ),
                     ),
                   ],
                 ),

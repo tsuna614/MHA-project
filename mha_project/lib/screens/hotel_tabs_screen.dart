@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:mha_project/screens/hotel_screens/booking_screen.dart';
-import 'package:mha_project/screens/hotel_screens/home_screen.dart';
-import 'package:mha_project/screens/hotel_screens/notifications_screen.dart';
+import 'package:mha_project/screens/hotel-screens/booking_screen.dart';
+import 'package:mha_project/screens/hotel-screens/home_screen.dart';
+import 'package:mha_project/screens/hotel-screens/notifications_screen.dart';
 import 'package:mha_project/screens/profile_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
-import 'package:mha_project/screens/hotel_screens/manage_screens/manage_screen.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/manage_screen.dart';
 import 'package:mha_project/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
