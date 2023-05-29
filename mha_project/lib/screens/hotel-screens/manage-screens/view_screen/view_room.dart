@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/hotel-screens/manage-screens/view_card.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_card.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
 

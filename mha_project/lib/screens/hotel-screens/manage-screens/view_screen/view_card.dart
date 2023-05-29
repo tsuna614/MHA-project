@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/hotel-screens/manage-screens/detail_screen.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/detail_screen.dart';
 
 class ViewCard extends StatelessWidget {
   const ViewCard(
