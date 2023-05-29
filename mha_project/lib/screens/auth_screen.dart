@@ -151,9 +151,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       minimumSize: const Size.fromHeight(40),
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
+                                      backgroundColor: Colors.blue),
                                   onPressed: () {
                                     _submit();
                                   },
