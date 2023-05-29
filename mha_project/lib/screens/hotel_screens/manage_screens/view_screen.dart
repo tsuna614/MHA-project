@@ -9,6 +9,10 @@ class ViewScreen extends StatelessWidget {
   final String categoryName;
   @override
   Widget build(BuildContext context) {
+    double AppbarHeight = AppBar().preferredSize.height;
+    double ScreenHeight = MediaQuery.of(context).size.height;
+    double showBottomSheetHeight = ScreenHeight - AppbarHeight;
+
     return Scaffold(
       appBar: AppBar(title: Text('VIEW $categoryName'.toUpperCase())),
       body: StreamBuilder(
@@ -41,11 +45,13 @@ class ViewScreen extends StatelessWidget {
                 return Column(
                   children: [
                     ViewCard(
-                        address: data['address'],
-                        beds: data['beds'],
-                        floor: data['floor'],
-                        price: data['price'],
-                        type: data['type'])
+                      address: data['address'],
+                      beds: data['beds'],
+                      floor: data['floor'],
+                      price: data['price'],
+                      type: data['type'],
+                      showBottomSheetHeight: showBottomSheetHeight,
+                    )
                   ],
                 );
               });
