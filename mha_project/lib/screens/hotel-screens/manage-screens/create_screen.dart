@@ -283,7 +283,7 @@ class _CreateScreenState extends State<CreateScreen> {
       textField4Icon = Icons.mail;
     } else {
       appBarTitle = 'CREATE CUSTOMER';
-      textField1HintText = 'Customer\'s ID';
+      textField1HintText = 'Identity card number';
       textField2HintText = 'Customer\'s fullname';
       textField3HintText = 'Customer\'s number';
       textField4HintText = 'Customer\'s email';

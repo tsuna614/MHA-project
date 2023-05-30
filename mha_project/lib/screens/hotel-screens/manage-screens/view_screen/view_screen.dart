@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_card.dart';
-import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_room.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
 
@@ -21,7 +20,7 @@ class ViewScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: StreamBuilder(
-        stream: firestoreRef.collection('room').snapshots(),
+        stream: firestoreRef.collection('$categoryName').snapshots(),
         builder: (context, snapshots) {
           if (snapshots.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -30,8 +29,8 @@ class ViewScreen extends StatelessWidget {
           }
 
           if (!snapshots.hasData || snapshots.data!.docs.isEmpty) {
-            return const Center(
-              child: Text('No rooms found.'),
+            return Center(
+              child: Text('No $categoryName found.'),
             );
           }
 
@@ -50,16 +49,40 @@ class ViewScreen extends StatelessWidget {
                 final docId = loadedData[index].id;
                 return Column(
                   children: [
-                    ViewCard(
-                      address: data['address'],
-                      beds: data['beds'],
-                      floor: data['floor'],
-                      price: data['price'],
-                      type: data['type'],
-                      showBottomSheetHeight: showBottomSheetHeight,
-                      userId: data['userId'],
-                      docId: docId,
-                    )
+                    if (categoryName == 'room') ...[
+                      ViewCard(
+                          categoryName: categoryName,
+                          parameter1: data['address'],
+                          parameter2: data['floor'],
+                          parameter3: data['type'],
+                          parameter4: data['beds'],
+                          parameter5: data['price'],
+                          showBottomSheetHeight: showBottomSheetHeight,
+                          userId: data['userId'],
+                          docId: docId)
+                    ] else if (categoryName == 'service') ...[
+                      ViewCard(
+                          categoryName: categoryName,
+                          parameter1: data['id'],
+                          parameter2: data['name'],
+                          parameter3: data['type'],
+                          parameter4: data['number'],
+                          parameter5: data['price'],
+                          showBottomSheetHeight: showBottomSheetHeight,
+                          userId: data['userId'],
+                          docId: docId)
+                    ] else ...[
+                      ViewCard(
+                          categoryName: categoryName,
+                          parameter1: data['id'],
+                          parameter2: data['name'],
+                          parameter3: data['email'],
+                          parameter4: data['number'],
+                          parameter5: 'None',
+                          showBottomSheetHeight: showBottomSheetHeight,
+                          userId: data['userId'],
+                          docId: docId)
+                    ]
                   ],
                 );
               });

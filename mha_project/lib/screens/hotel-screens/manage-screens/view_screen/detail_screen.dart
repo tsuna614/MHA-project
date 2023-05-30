@@ -5,15 +5,33 @@ import 'package:flutter/material.dart';
 class DetailScreen extends StatelessWidget {
   const DetailScreen(
       {super.key,
-      required this.address,
-      required this.beds,
-      required this.floor,
-      required this.price,
-      required this.type,
+      required this.categoryName,
+      required this.parameter1,
+      required this.parameter2,
+      required this.parameter3,
+      required this.parameter4,
+      required this.parameter5,
       required this.showBottomSheetHeight,
       required this.docId});
-  final String address, beds, floor, price, type, docId;
+  final String parameter1,
+      parameter2,
+      parameter3,
+      parameter4,
+      parameter5,
+      docId,
+      categoryName;
   final double showBottomSheetHeight;
+  String _setImage() {
+    if (categoryName == 'room') {
+      return 'assets/images/room.jpg';
+    } else if (categoryName == 'service') {
+      return 'assets/images/service.jpg';
+    } else if (categoryName == 'employee') {
+      return 'assets/images/employee.jpg';
+    }
+    return 'assets/images/customer.jpg';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
@@ -30,10 +48,10 @@ class DetailScreen extends StatelessWidget {
                           margin: EdgeInsets.all(20.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20.0),
-                            child: Image.asset('assets/images/room.jpg'),
+                            child: Image(image: AssetImage(_setImage())),
                           )),
                       Text(
-                        'Room\'s information',
+                        '${categoryName[0].toUpperCase()}${categoryName.substring(1).toLowerCase()}\'s information',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 22.0,
@@ -58,73 +76,95 @@ class DetailScreen extends StatelessWidget {
                                 Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
-                                      Text('Room\'s address:',
+                                    children: [
+                                      Text(
+                                          (categoryName == 'room')
+                                              ? 'Room\'s address'
+                                              : '${categoryName[0].toUpperCase()}${categoryName.substring(1).toLowerCase()}\'s Id:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('Floor:',
+                                      Text(
+                                          (categoryName == 'room')
+                                              ? 'Floor:'
+                                              : 'Name:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('Type:',
+                                      Text(
+                                          (categoryName == 'room') ||
+                                                  (categoryName == 'service')
+                                              ? 'Type:'
+                                              : 'Email:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('Number of bed:',
+                                      Text(
+                                          (categoryName == 'room')
+                                              ? 'Number of bed:'
+                                              : 'Number:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('Price:',
-                                          style: TextStyle(
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18.0)),
-                                      Text('Status:',
-                                          style: TextStyle(
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18.0)),
+                                      if (categoryName == 'room' ||
+                                          categoryName == 'service') ...[
+                                        Text('Price:',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0))
+                                      ],
+                                      if (categoryName == 'room') ...[
+                                        Text('Status:',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0))
+                                      ]
                                     ]),
                                 Column(children: [
-                                  Text('$address',
+                                  Text('$parameter1',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
-                                  Text('$floor',
+                                  Text('$parameter2',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
-                                  Text('$type',
+                                  Text('$parameter3',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
-                                  Text('$beds',
+                                  Text('$parameter4',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
-                                  Text('$price',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  Text('None',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0))
+                                  if (categoryName == 'room' ||
+                                      categoryName == 'service') ...[
+                                    Text('$parameter5\$',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0)),
+                                  ],
+                                  if (categoryName == 'room') ...[
+                                    Text('None',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0))
+                                  ]
                                 ]),
                               ])),
                           Container(
-                              // margin: EdgeInsets.only(top: 50.0, bottom: 30.0),
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -137,7 +177,7 @@ class DetailScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  DeleteDialog(context, docId, address);
+                                  DeleteDialog(context, docId, parameter1);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red),
@@ -162,7 +202,7 @@ void DeleteDialog(context, id, name) {
       context: context,
       builder: (BuildContext context) => AlertDialog(
             title: Text('Delete'),
-            content: Text('Are you sure you want to delete this object'),
+            content: Text('Are you sure you want to delete this object?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
