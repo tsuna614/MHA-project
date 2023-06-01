@@ -74,6 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       selectedMainScreen = 0;
     }
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: appBarTitle == 'Profile'
           ? null
           : AppBar(

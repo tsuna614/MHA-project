@@ -97,8 +97,7 @@ class _TabScreenState extends State<TabScreen> {
               setState(() {
                 _selectedIndex = index;
                 _pageController.animateToPage(_selectedIndex,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.linear);
+                    duration: Duration(milliseconds: 1), curve: Curves.linear);
                 widget.changeTitle(index);
               });
             },
