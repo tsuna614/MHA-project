@@ -39,11 +39,17 @@ class DetailScreen extends StatelessWidget {
         onPressed: () {
           showModalBottomSheet(
               context: context,
-              isScrollControlled: true,
+              isScrollControlled:
+                  true, // this line will make the bottom sheet go all the way up (show full of its height)
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30.0),
+                ),
+              ), // this line will round the top left and right corners of bottom sheet
               builder: (BuildContext context) {
                 return SingleChildScrollView(
                   child: Container(
-                    height: showBottomSheetHeight,
+                    height: 700,
                     child: Column(children: [
                       Container(
                           margin: EdgeInsets.all(20.0),
@@ -130,75 +136,91 @@ class DetailScreen extends StatelessWidget {
                                                 fontSize: 18.0))
                                       ]
                                     ]),
-                                Column(children: [
-                                  Text('$parameter1',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  Text('$parameter2',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  Text('$parameter3',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  Text('$parameter4',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  Text(
-                                      (categoryName == 'room' ||
-                                              categoryName == 'service')
-                                          ? '$parameter5\$'
-                                          : '$parameter5',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0)),
-                                  if (categoryName == 'room') ...[
-                                    Text('None',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.0))
-                                  ]
-                                ]),
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('$parameter1',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0)),
+                                      Text('$parameter2',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0)),
+                                      Text('$parameter3',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0)),
+                                      Text('$parameter4',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0)),
+                                      Text(
+                                          (categoryName == 'room' ||
+                                                  categoryName == 'service')
+                                              ? '$parameter5\$'
+                                              : '$parameter5',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0)),
+                                      if (categoryName == 'room') ...[
+                                        Text('None',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0))
+                                      ]
+                                    ]),
                               ])),
+                          SizedBox(height: 40),
                           Container(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => EditScreen(
-                                          categoryName: categoryName,
-                                          parameter1: parameter1,
-                                          parameter2: parameter2,
-                                          parameter3: parameter3,
-                                          parameter4: parameter4,
-                                          parameter5: parameter5,
-                                          showBottomSheetHeight:
-                                              showBottomSheetHeight,
-                                          docId: docId)));
-                                },
-                                child: Text('Edit'),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 138, 163, 255)),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 30),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => EditScreen(
+                                                  categoryName: categoryName,
+                                                  parameter1: parameter1,
+                                                  parameter2: parameter2,
+                                                  parameter3: parameter3,
+                                                  parameter4: parameter4,
+                                                  parameter5: parameter5,
+                                                  showBottomSheetHeight:
+                                                      showBottomSheetHeight,
+                                                  docId: docId)));
+                                    },
+                                    child: Text('Edit'),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 138, 163, 255)),
+                                  ),
+                                ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  DeleteDialog(context, docId, categoryName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red),
-                                child: Text('Delete'),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 30),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      DeleteDialog(
+                                          context, docId, categoryName);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red),
+                                    child: Text('Delete'),
+                                  ),
+                                ),
                               ),
                             ],
                           ))
@@ -222,15 +244,22 @@ void DeleteDialog(context, id, categoryName) {
             content: Text('Are you sure you want to delete this object?'),
             actions: <Widget>[
               TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.black.withOpacity(0.8)),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () {
                   _deleteObject(context, id, categoryName);
                   // Navigator.of(context).pop(context);
                 },
-                child: Text('Sure'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: Text('Cancel'),
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ));

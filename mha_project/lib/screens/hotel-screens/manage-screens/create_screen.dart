@@ -17,13 +17,13 @@ final List<String> roomType = [
   "EXECUTIVE",
 ];
 final List<String> serviceType = [
-  "CLEAN UP",
-  "LAUNDRY",
-  "RECEPTION",
-  "LUGGAGE",
+  "Clean Up",
+  "Laundry",
+  "Reception",
+  "Luggage",
   "Food & Beverage",
-  "TRANSPORT",
-  "CALLING",
+  "Transport",
+  "Calling",
 ];
 final List<String> customerType = [
   "International",

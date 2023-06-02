@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mha_project/screens/hotel-screens/booking-screen/find_room_screen.dart';
 
 final List<String> roomType = [
   "SINGLE",
@@ -28,6 +29,16 @@ class _BookingScreenState extends State<BookingScreen> {
 
   var _selectedRoomType = roomType[0];
 
+  bool isTextFieldNumberValid(String text) {
+    if (double.tryParse(text) == null) {
+      return false;
+    }
+    if (double.tryParse(text)! < 0) {
+      return false;
+    }
+    return true;
+  }
+
   void _submitCreateRoom(BuildContext context) {
     final enteredTextField1 = _textField1Controller.text;
     final enteredTextField2 = _textField2Controller.text;
@@ -35,11 +46,49 @@ class _BookingScreenState extends State<BookingScreen> {
     final enteredTextField4 = _textField4Controller.text;
     final selectedType = _selectedRoomType;
 
-    print(enteredTextField1);
-    print(enteredTextField2);
-    print(enteredTextField3);
-    print(enteredTextField4);
-    print(selectedType);
+    // print(enteredTextField1);
+    // print(enteredTextField2);
+    // print(enteredTextField3);
+    // print(enteredTextField4);
+    // print(selectedType);
+
+    var _errorMessage;
+
+    if (enteredTextField1.trim().isEmpty) {
+      _errorMessage = 'Guest\'s id must not be empty.';
+    } else if (enteredTextField2.trim().isEmpty) {
+      _errorMessage = 'Date of arrival is invalid.';
+    } else if (enteredTextField3.trim().isEmpty) {
+      _errorMessage = 'Date of departure is invalid.';
+    }
+
+    if (_errorMessage != null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Alert'),
+          content: Text(_errorMessage),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // close AlertDialog
+                },
+                child: const Text('Close'))
+          ],
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FindRoomScreen(
+                guestId: enteredTextField1,
+                dateArrival: enteredTextField2,
+                dateDeparture: enteredTextField3,
+                price: enteredTextField4,
+                roomType: selectedType)));
   }
 
   @override
@@ -175,7 +224,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20.0)),
                       ),
-                      hintText: 'Enter maximum price',
+                      hintText: 'Enter maximum price  (optional)',
                       hintStyle: const TextStyle(fontSize: 18.0),
                       prefixIcon: Icon(
                         Icons.monetization_on,
@@ -240,7 +289,10 @@ class _BookingScreenState extends State<BookingScreen> {
                         onPressed: () {
                           _submitCreateRoom(context);
                         },
-                        child: const Text('CREATE')),
+                        child: const Text(
+                          'LOOK FOR A ROOM',
+                          style: TextStyle(fontSize: 20),
+                        )),
                   ),
                 ],
               ),
