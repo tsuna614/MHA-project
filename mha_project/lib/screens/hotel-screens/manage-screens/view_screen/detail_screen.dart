@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/edit_screen.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen(
@@ -93,11 +94,7 @@ class DetailScreen extends StatelessWidget {
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text(
-                                          (categoryName == 'room') ||
-                                                  (categoryName == 'service')
-                                              ? 'Type:'
-                                              : 'Email:',
+                                      Text('Type:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
@@ -113,6 +110,13 @@ class DetailScreen extends StatelessWidget {
                                       if (categoryName == 'room' ||
                                           categoryName == 'service') ...[
                                         Text('Price:',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0))
+                                      ] else if (categoryName == 'employee' ||
+                                          categoryName == 'customer') ...[
+                                        Text('Email:',
                                             style: TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
@@ -147,14 +151,15 @@ class DetailScreen extends StatelessWidget {
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0)),
-                                  if (categoryName == 'room' ||
-                                      categoryName == 'service') ...[
-                                    Text('$parameter5\$',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.0)),
-                                  ],
+                                  Text(
+                                      (categoryName == 'room' ||
+                                              categoryName == 'service')
+                                          ? '$parameter5\$'
+                                          : '$parameter5',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0)),
                                   if (categoryName == 'room') ...[
                                     Text('None',
                                         style: TextStyle(
@@ -169,7 +174,19 @@ class DetailScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => EditScreen(
+                                          categoryName: categoryName,
+                                          parameter1: parameter1,
+                                          parameter2: parameter2,
+                                          parameter3: parameter3,
+                                          parameter4: parameter4,
+                                          parameter5: parameter5,
+                                          showBottomSheetHeight:
+                                              showBottomSheetHeight,
+                                          docId: docId)));
+                                },
                                 child: Text('Edit'),
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
@@ -177,7 +194,7 @@ class DetailScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  DeleteDialog(context, docId, parameter1);
+                                  DeleteDialog(context, docId, categoryName);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red),
@@ -197,16 +214,16 @@ class DetailScreen extends StatelessWidget {
   }
 }
 
-void DeleteDialog(context, id, name) {
+void DeleteDialog(context, id, categoryName) {
   showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-            title: Text('Delete'),
+            title: Text('Delete!'),
             content: Text('Are you sure you want to delete this object?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  _deleteObject(context, id, name);
+                  _deleteObject(context, id, categoryName);
                   // Navigator.of(context).pop(context);
                 },
                 child: Text('Sure'),
@@ -219,8 +236,8 @@ void DeleteDialog(context, id, name) {
           ));
 }
 
-void _deleteObject(context, id, name) async {
-  await FirebaseFirestore.instance.collection('room').doc(id).delete();
+void _deleteObject(context, id, categoryName) async {
+  await FirebaseFirestore.instance.collection(categoryName).doc(id).delete();
 
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(

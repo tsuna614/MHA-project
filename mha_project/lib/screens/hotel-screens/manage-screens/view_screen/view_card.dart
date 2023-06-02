@@ -16,9 +16,9 @@ class ViewCard extends StatelessWidget {
   final String
       parameter1, //parameter1: address(room)/id (service&customer&employee)
       parameter2, //parameter2: floor(room)/name (service&customer&employee)
-      parameter3, //parameter3: type(room&service)/email (customer&employee)
+      parameter3, //parameter3: type (for all object)
       parameter4, //parameter4: beds(room)/number (sesrvice&customer&employee)
-      parameter5, //parameter5: price(room&service)
+      parameter5, //parameter5: price (room&service) / email(employee&customer)
       userId,
       docId,
       categoryName;
@@ -72,10 +72,8 @@ class ViewCard extends StatelessWidget {
                 (() {
                   if (categoryName == 'room') {
                     return 'Type: $parameter3 \nBed number: $parameter4';
-                  } else if (categoryName == 'service') {
-                    return 'Id: $parameter1 \nType: $parameter3';
                   }
-                  return 'Id: $parameter1 \nNumber: $parameter4';
+                  return 'Id: $parameter1 \nType: $parameter3';
                 }()),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

@@ -76,9 +76,9 @@ class ViewScreen extends StatelessWidget {
                           categoryName: categoryName,
                           parameter1: data['id'],
                           parameter2: data['name'],
-                          parameter3: data['email'],
+                          parameter3: data['type'],
                           parameter4: data['number'],
-                          parameter5: 'None',
+                          parameter5: data['email'],
                           showBottomSheetHeight: showBottomSheetHeight,
                           userId: data['userId'],
                           docId: docId)

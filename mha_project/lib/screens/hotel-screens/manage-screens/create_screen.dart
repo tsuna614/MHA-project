@@ -10,21 +10,24 @@ final List<String> roomType = [
   "SINGLE",
   "DOUBLE",
   "QUAD",
-  "QUEEN",
-  "KING",
   "TWIN",
-  "STUDIO",
-  "SUITE",
-  "APARTMENT",
-  "VILLA",
+  "STANDARD",
+  "SUPERIOR",
+  "DELUXE",
+  "EXECUTIVE",
 ];
 final List<String> serviceType = [
   "CLEAN UP",
-  "ROOM SERVICE",
+  "LAUNDRY",
   "RECEPTION",
   "LUGGAGE",
-  "BREAKFAST",
+  "Food & Beverage",
   "TRANSPORT",
+  "CALLING",
+];
+final List<String> customerType = [
+  "International",
+  "National",
 ];
 
 class CreateScreen extends StatefulWidget {
@@ -47,6 +50,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
   var _selectedRoomType = roomType[0];
   var _selectedServiceType = serviceType[0];
+  var _selectedCustomerType = customerType[0];
 
   bool isTextFieldNumberValid(String text) {
     if (double.tryParse(text) == null) {
@@ -188,7 +192,8 @@ class _CreateScreenState extends State<CreateScreen> {
               'id': enteredTextField1,
               'name': enteredTextField2,
               'number': enteredTextField3,
-              'email': enteredTextField4
+              'email': enteredTextField4,
+              'type': _selectedServiceType,
             },
           );
           break;
@@ -199,7 +204,8 @@ class _CreateScreenState extends State<CreateScreen> {
               'id': enteredTextField1,
               'name': enteredTextField2,
               'number': enteredTextField3,
-              'email': enteredTextField4
+              'email': enteredTextField4,
+              'type': _selectedCustomerType,
             },
           );
           break;
@@ -464,23 +470,41 @@ class _CreateScreenState extends State<CreateScreen> {
                         ),
                       ),
                       if (widget.categoryName == 'room' ||
-                          widget.categoryName == 'service')
+                          widget.categoryName == 'service' ||
+                          widget.categoryName == 'employee' ||
+                          widget.categoryName == 'customer')
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 30, right: 30),
                             child: DropdownButton(
                               value: widget.categoryName == 'room'
                                   ? _selectedRoomType
-                                  : _selectedServiceType,
+                                  : widget.categoryName == 'service'
+                                      ? _selectedServiceType
+                                      : widget.categoryName == 'employee'
+                                          ? _selectedServiceType
+                                          : _selectedCustomerType,
                               items: widget.categoryName == 'room'
                                   ? roomType
                                       .map((data) => DropdownMenuItem(
                                           value: data, child: Text(data)))
                                       .toList()
-                                  : serviceType
-                                      .map((data) => DropdownMenuItem(
-                                          value: data, child: Text(data)))
-                                      .toList(),
+                                  : widget.categoryName == 'service'
+                                      ? serviceType
+                                          .map((data) => DropdownMenuItem(
+                                              value: data, child: Text(data)))
+                                          .toList()
+                                      : widget.categoryName == 'employee'
+                                          ? serviceType
+                                              .map((data) => DropdownMenuItem(
+                                                  value: data,
+                                                  child: Text(data)))
+                                              .toList()
+                                          : customerType
+                                              .map((data) => DropdownMenuItem(
+                                                  value: data,
+                                                  child: Text(data)))
+                                              .toList(),
                               onChanged: (value) {
                                 if (value == null) {
                                   return;
@@ -488,8 +512,12 @@ class _CreateScreenState extends State<CreateScreen> {
                                 setState(() {
                                   if (widget.categoryName == 'room')
                                     _selectedRoomType = value;
-                                  else
+                                  else if (widget.categoryName == 'service')
                                     _selectedServiceType = value;
+                                  else if (widget.categoryName == 'employee')
+                                    _selectedServiceType = value;
+                                  else
+                                    _selectedCustomerType = value;
                                 });
                               },
                               // style: ,
