@@ -44,21 +44,20 @@ class _TabScreenState extends State<TabScreen> {
   //   });
   // }
 
-  var _pages = [
+  final _pages = [
     HomeScreen(),
     ManageScreen(),
     BookingScreen(),
     NotificationsScreen()
   ];
-  var _pageController = PageController();
+  final _pageController = PageController();
 
-  Widget chosenScreen = const HomeScreen();
+  Widget chosenScreen = HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: _pages,
         onPageChanged: (index) {
           setState(() {
             _selectedIndex = index;
@@ -66,6 +65,7 @@ class _TabScreenState extends State<TabScreen> {
           widget.changeTitle(index);
         },
         controller: _pageController,
+        children: _pages,
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)

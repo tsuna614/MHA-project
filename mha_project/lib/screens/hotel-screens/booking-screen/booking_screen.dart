@@ -52,22 +52,22 @@ class _BookingScreenState extends State<BookingScreen> {
     // print(enteredTextField4);
     // print(selectedType);
 
-    var _errorMessage;
+    var errorMessage;
 
     if (enteredTextField1.trim().isEmpty) {
-      _errorMessage = 'Guest\'s id must not be empty.';
+      errorMessage = 'Guest\'s id must not be empty.';
     } else if (enteredTextField2.trim().isEmpty) {
-      _errorMessage = 'Date of arrival is invalid.';
+      errorMessage = 'Date of arrival is invalid.';
     } else if (enteredTextField3.trim().isEmpty) {
-      _errorMessage = 'Date of departure is invalid.';
+      errorMessage = 'Date of departure is invalid.';
     }
 
-    if (_errorMessage != null) {
+    if (errorMessage != null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Alert'),
-          content: Text(_errorMessage),
+          content: Text(errorMessage),
           actions: [
             TextButton(
                 onPressed: () {
@@ -80,21 +80,19 @@ class _BookingScreenState extends State<BookingScreen> {
       return;
     }
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => FindRoomScreen(
-                guestId: enteredTextField1,
-                dateArrival: enteredTextField2,
-                dateDeparture: enteredTextField3,
-                price: enteredTextField4,
-                roomType: selectedType)));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => FindRoomScreen(
+    //             guestId: enteredTextField1,
+    //             dateArrival: enteredTextField2,
+    //             dateDeparture: enteredTextField3,
+    //             price: enteredTextField4,
+    //             roomType: selectedType)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -279,21 +277,18 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                   ),
                   SizedBox(height: 100),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 60),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () {
-                          _submitCreateRoom(context);
-                        },
-                        child: const Text(
-                          'LOOK FOR A ROOM',
-                          style: TextStyle(fontSize: 20),
-                        )),
-                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(40),
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () {
+                        _submitCreateRoom(context);
+                      },
+                      child: const Text(
+                        'LOOK FOR A ROOM',
+                        style: TextStyle(fontSize: 20),
+                      )),
                 ],
               ),
             ),

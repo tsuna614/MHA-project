@@ -74,10 +74,13 @@ class _MainScreenState extends State<MainScreen> {
       selectedMainScreen = 0;
     }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset:
+          false, // add this line to hide bottom contents (nav bar) when showing keyboard
+
       appBar: appBarTitle == 'Profile'
           ? null
           : AppBar(
+              centerTitle: true,
               title: Text(
                 appBarTitle,
                 style: TextStyle(
