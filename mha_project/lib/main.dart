@@ -26,6 +26,17 @@ import 'package:mha_project/screens/hotel_tabs_screen.dart';
 final theme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Color.fromARGB(255, 255, 123, 29),
+  // textSelectionTheme: TextSelectionThemeData(
+  //   cursorColor: Color.fromARGB(255, 255, 123, 29),
+  //   selectionColor: Color.fromARGB(255, 255, 123, 29),
+  //   selectionHandleColor: Color.fromARGB(255, 255, 123, 29),
+  // ),
+
+  // hintColor: Color.fromARGB(255, 255, 123, 29),
+
+  colorScheme: ThemeData().colorScheme.copyWith(
+        primary: Color.fromARGB(255, 255, 123, 29),
+      ),
 
   // fontFamily: 'Georgia',
   // textTheme: const TextTheme(
