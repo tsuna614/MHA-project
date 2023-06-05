@@ -488,16 +488,33 @@ class _CreateScreenState extends State<CreateScreen> {
                                 underline: SizedBox(),
                                 value: widget.categoryName == 'room'
                                     ? _selectedRoomType
-                                    : _selectedServiceType,
+                                    : widget.categoryName == 'service'
+                                        ? _selectedServiceType
+                                        : widget.categoryName == 'employee'
+                                            ? _selectedServiceType
+                                            : _selectedCustomerType,
                                 items: widget.categoryName == 'room'
                                     ? roomType
                                         .map((data) => DropdownMenuItem(
                                             value: data, child: Text(data)))
                                         .toList()
-                                    : serviceType
-                                        .map((data) => DropdownMenuItem(
-                                            value: data, child: Text(data)))
-                                        .toList(),
+                                    : widget.categoryName == 'service'
+                                        ? serviceType
+                                            .map((data) => DropdownMenuItem(
+                                                value: data, child: Text(data)))
+                                            .toList()
+                                        : widget.categoryName == 'employee'
+                                            ? serviceType
+                                                .map((data) => DropdownMenuItem(
+                                                    value: data,
+                                                    child: Text(data)))
+                                                .toList()
+                                            : customerType
+                                                .map((data) => DropdownMenuItem(
+                                                    value: data,
+                                                    child: Text(data)))
+                                                .toList(),
+
                                 onChanged: (value) {
                                   if (value == null) {
                                     return;
@@ -505,8 +522,12 @@ class _CreateScreenState extends State<CreateScreen> {
                                   setState(() {
                                     if (widget.categoryName == 'room')
                                       _selectedRoomType = value;
-                                    else
+                                    else if (widget.categoryName == 'service')
                                       _selectedServiceType = value;
+                                    else if (widget.categoryName == 'employee')
+                                      _selectedServiceType = value;
+                                    else
+                                      _selectedCustomerType = value;
                                   });
                                 },
                                 // style: ,
