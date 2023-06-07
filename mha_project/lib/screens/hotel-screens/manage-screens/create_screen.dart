@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // const ROOM_COLLECTION_NAME = 'rooms';
 
-final user = FirebaseAuth.instance.currentUser!;
-
 final List<String> roomType = [
   "SINGLE",
   "DOUBLE",
@@ -153,6 +151,7 @@ class _CreateScreenState extends State<CreateScreen> {
     }
 
     try {
+      final user = await FirebaseAuth.instance.currentUser!;
       CollectionReference roomRef =
           FirebaseFirestore.instance.collection(widget.categoryName);
       DocumentReference newRoomRef =

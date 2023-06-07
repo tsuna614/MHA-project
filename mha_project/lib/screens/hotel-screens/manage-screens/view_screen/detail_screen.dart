@@ -3,8 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/edit_screen.dart';
 
-class DetailScreen extends StatelessWidget {
-  const DetailScreen(
+final firestoreRef = FirebaseFirestore.instance;
+
+class DetailScreen extends StatefulWidget {
+  DetailScreen(
       {super.key,
       required this.categoryName,
       required this.parameter1,
@@ -22,21 +24,97 @@ class DetailScreen extends StatelessWidget {
       docId,
       categoryName;
   final double showBottomSheetHeight;
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isAvailable = true;
+
   String _setImage() {
-    if (categoryName == 'room') {
+    if (widget.categoryName == 'room') {
       return 'assets/images/room.jpg';
-    } else if (categoryName == 'service') {
+    } else if (widget.categoryName == 'service') {
       return 'assets/images/service.jpg';
-    } else if (categoryName == 'employee') {
+    } else if (widget.categoryName == 'employee') {
       return 'assets/images/employee.jpg';
     }
     return 'assets/images/customer.jpg';
   }
 
+  Future<DateTime> getDateArrival(roomId) async {
+    Timestamp arrival, departure;
+    late DateTime dateOfArrival;
+    // , dateOfDeparture;
+    final data = await firestoreRef
+        .collection('booking')
+        .where('roomId', isEqualTo: roomId)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        arrival = doc['arrival'];
+        dateOfArrival = arrival.toDate();
+        // departure = doc['departure'];
+        // dateOfDeparture = departure.toDate();
+      });
+    });
+    return dateOfArrival;
+  }
+
+  Future<DateTime> getDateDeparture(String roomId) async {
+    Timestamp arrival, departure;
+    late DateTime dateOfDeparture;
+    // , dateOfDeparture;
+    final data = await firestoreRef
+        .collection('booking')
+        .where('roomId', isEqualTo: roomId)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        // arrival = doc['arrival'];
+        // dateOfArrival = arrival.toDate();
+        departure = doc['departure'];
+        dateOfDeparture = departure.toDate();
+      });
+    });
+    return dateOfDeparture;
+  }
+
+  void checkStatus(String roomId) async {
+    final now = DateTime.now();
+    DateTime dateOfArrival = await getDateArrival(roomId);
+    DateTime dateOfDeparture = await getDateDeparture(roomId);
+    print(dateOfArrival);
+    print(dateOfDeparture);
+    if (now.compareTo(dateOfArrival) > 0 &&
+        now.compareTo(dateOfDeparture) < 0) {
+      print('Not available');
+      setState(() {
+        isAvailable = false;
+      });
+    } else {
+      print('Available');
+      setState(() {
+        isAvailable = true;
+      });
+    }
+  }
+
+  @override
+  initState() {
+    super.initState();
+    checkStatus(widget.docId);
+  }
+
+  // void checkStatus() {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
         onPressed: () {
+          // if (categoryName == "room") {
+          //   checkStatus();
+          // }
           showModalBottomSheet(
               context: context,
               isScrollControlled:
@@ -49,7 +127,7 @@ class DetailScreen extends StatelessWidget {
               builder: (BuildContext context) {
                 return SingleChildScrollView(
                   child: Container(
-                    height: 700,
+                    height: widget.showBottomSheetHeight,
                     child: Column(children: [
                       Container(
                           margin: EdgeInsets.all(20.0),
@@ -58,7 +136,7 @@ class DetailScreen extends StatelessWidget {
                             child: Image(image: AssetImage(_setImage())),
                           )),
                       Text(
-                        '${categoryName[0].toUpperCase()}${categoryName.substring(1).toLowerCase()}\'s information',
+                        '${widget.categoryName[0].toUpperCase()}${widget.categoryName.substring(1).toLowerCase()}\'s information',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 22.0,
@@ -85,15 +163,15 @@ class DetailScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          (categoryName == 'room')
+                                          (widget.categoryName == 'room')
                                               ? 'Room\'s address'
-                                              : '${categoryName[0].toUpperCase()}${categoryName.substring(1).toLowerCase()}\'s Id:',
+                                              : '${widget.categoryName[0].toUpperCase()}${widget.categoryName.substring(1).toLowerCase()}\'s Id:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
                                       Text(
-                                          (categoryName == 'room')
+                                          (widget.categoryName == 'room')
                                               ? 'Floor:'
                                               : 'Name:',
                                           style: TextStyle(
@@ -106,29 +184,31 @@ class DetailScreen extends StatelessWidget {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
                                       Text(
-                                          (categoryName == 'room')
+                                          (widget.categoryName == 'room')
                                               ? 'Number of bed:'
                                               : 'Number:',
                                           style: TextStyle(
                                               color: Colors.orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      if (categoryName == 'room' ||
-                                          categoryName == 'service') ...[
+                                      if (widget.categoryName == 'room' ||
+                                          widget.categoryName == 'service') ...[
                                         Text('Price:',
                                             style: TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18.0))
-                                      ] else if (categoryName == 'employee' ||
-                                          categoryName == 'customer') ...[
+                                      ] else if (widget.categoryName ==
+                                              'employee' ||
+                                          widget.categoryName ==
+                                              'customer') ...[
                                         Text('Email:',
                                             style: TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18.0))
                                       ],
-                                      if (categoryName == 'room') ...[
+                                      if (widget.categoryName == 'room') ...[
                                         Text('Status:',
                                             style: TextStyle(
                                                 color: Colors.orange,
@@ -140,41 +220,54 @@ class DetailScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('$parameter1',
+                                      Text('${widget.parameter1}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('$parameter2',
+                                      Text('${widget.parameter2}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('$parameter3',
+                                      Text('${widget.parameter3}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      Text('$parameter4',
+                                      Text('${widget.parameter4}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
                                       Text(
-                                          (categoryName == 'room' ||
-                                                  categoryName == 'service')
-                                              ? '$parameter5\$'
-                                              : '$parameter5',
+                                          (widget.categoryName == 'room' ||
+                                                  widget.categoryName ==
+                                                      'service')
+                                              ? '${widget.parameter5}\$'
+                                              : '${widget.parameter5}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18.0)),
-                                      if (categoryName == 'room') ...[
-                                        Text('None',
+                                      if (widget.categoryName == 'room') ...[
+                                        // Text('None',
+                                        //     style: TextStyle(
+                                        //         color: Colors.black,
+                                        //         fontWeight: FontWeight.bold,
+                                        //         fontSize: 18.0))
+                                        // StayedDate(roomId: docId)
+
+                                        Text(
+                                            // ignore: unrelated_type_equality_checks
+                                            (isAvailable == false)
+                                                ? 'Not Available'
+                                                : 'Available',
                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18.0))
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0,
+                                            )),
                                       ]
                                     ]),
                               ])),
@@ -191,15 +284,16 @@ class DetailScreen extends StatelessWidget {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) => EditScreen(
-                                                  categoryName: categoryName,
-                                                  parameter1: parameter1,
-                                                  parameter2: parameter2,
-                                                  parameter3: parameter3,
-                                                  parameter4: parameter4,
-                                                  parameter5: parameter5,
-                                                  showBottomSheetHeight:
-                                                      showBottomSheetHeight,
-                                                  docId: docId)));
+                                                  categoryName:
+                                                      widget.categoryName,
+                                                  parameter1: widget.parameter1,
+                                                  parameter2: widget.parameter2,
+                                                  parameter3: widget.parameter3,
+                                                  parameter4: widget.parameter4,
+                                                  parameter5: widget.parameter5,
+                                                  showBottomSheetHeight: widget
+                                                      .showBottomSheetHeight,
+                                                  docId: widget.docId)));
                                     },
                                     child: Text('Edit'),
                                     style: ElevatedButton.styleFrom(
@@ -213,8 +307,8 @@ class DetailScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(horizontal: 30),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      DeleteDialog(
-                                          context, docId, categoryName);
+                                      DeleteDialog(context, widget.docId,
+                                          widget.categoryName);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red),
@@ -223,7 +317,7 @@ class DetailScreen extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          ))
+                          )),
                         ]),
                       ),
                     ]),

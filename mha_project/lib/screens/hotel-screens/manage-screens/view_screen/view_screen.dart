@@ -1,26 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_card.dart';
-
-final firestoreRef = FirebaseFirestore.instance;
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/filter_view_screen.dart';
 
 class ViewScreen extends StatelessWidget {
-  const ViewScreen({super.key, required this.categoryName});
+  ViewScreen({super.key, required this.categoryName});
   final String categoryName;
+
+  final user = FirebaseAuth.instance.currentUser!;
+  final firestoreRef = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
+    final userId = user.uid;
     double AppbarHeight = AppBar().preferredSize.height;
     double ScreenHeight = MediaQuery.of(context).size.height;
-    double showBottomSheetHeight = ScreenHeight - AppbarHeight;
+    double showBottomSheetHeight = ScreenHeight - AppbarHeight - 100;
     print(ScreenHeight);
     return Scaffold(
       appBar: AppBar(
-        title: Text('VIEW $categoryName'.toUpperCase()),
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 0,
-      ),
+          title: Text('VIEW $categoryName'.toUpperCase()),
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          actions: [
+            FilterList(categoryName: categoryName),
+          ]),
       body: StreamBuilder(
-        stream: firestoreRef.collection('$categoryName').snapshots(),
+        stream: firestoreRef
+            .collection('$categoryName')
+            .where('userId', isEqualTo: userId)
+            .snapshots(),
         builder: (context, snapshots) {
           if (snapshots.connectionState == ConnectionState.waiting) {
             return const Center(
