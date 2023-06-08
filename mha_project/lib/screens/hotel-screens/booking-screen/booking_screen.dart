@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mha_project/screens/hotel-screens/booking-screen/find_room_screen.dart';
+// import 'package:intl/date_symbol_data_local.dart';
+// import 'package:intl/intl_browser.dart';
 
 final List<String> roomType = [
   "SINGLE",
   "DOUBLE",
   "QUAD",
-  "QUEEN",
-  "KING",
   "TWIN",
-  "STUDIO",
-  "SUITE",
-  "APARTMENT",
-  "VILLA",
+  "STANDARD",
+  "SUPERIOR",
+  "DELUXE",
+  "EXECUTIVE",
 ];
 
 class BookingScreen extends StatefulWidget {
@@ -23,8 +24,10 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   final _textField1Controller = TextEditingController();
+  TextEditingController dateinputArrival = TextEditingController();
   final _textField2Controller = TextEditingController();
   final _textField3Controller = TextEditingController();
+  TextEditingController dateinputDeparture = TextEditingController();
   final _textField4Controller = TextEditingController();
 
   var _selectedRoomType = roomType[0];
@@ -92,6 +95,12 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   @override
+  void initState() {
+    dateinputArrival.text = "";
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -151,8 +160,8 @@ class _BookingScreenState extends State<BookingScreen> {
                   ),
                   const SizedBox(height: 30),
                   TextField(
-                    controller: _textField2Controller,
-                    keyboardType: TextInputType.datetime,
+                    controller: dateinputArrival,
+                    // keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       contentPadding:
@@ -175,35 +184,81 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                       filled: true,
                     ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? arrivalPickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2010),
+                        lastDate: DateTime(2030),
+                        initialEntryMode: DatePickerEntryMode.input,
+                        helpText: 'Select arrival date',
+                      );
+                      if (arrivalPickedDate != null &&
+                          arrivalPickedDate != DateTime.now()) {
+                        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                        final String formatted =
+                            formatter.format(arrivalPickedDate);
+                        // String formatDate = DateFormat.yMd().format(pickedDate);
+                        setState(() {
+                          dateinputArrival.text = formatted;
+                        });
+                      }
+                    },
                     //onSubmitted :
                   ),
                   const SizedBox(height: 30),
                   TextField(
-                    controller: _textField3Controller,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 15.0),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      controller: dateinputDeparture,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 15.0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20.0)),
+                        ),
+                        hintText: 'Enter date of departure',
+                        hintStyle: const TextStyle(fontSize: 18.0),
+                        prefixIcon: Icon(
+                          Icons.calendar_month,
+                          size: 30.0,
+                        ),
+                        filled: true,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                      hintText: 'Enter date of departure',
-                      hintStyle: const TextStyle(fontSize: 18.0),
-                      prefixIcon: Icon(
-                        Icons.calendar_month,
-                        size: 30.0,
-                      ),
-                      filled: true,
-                    ),
-                  ),
+                      readOnly: true,
+                      onTap: () async {
+                        if (dateinputArrival.text.isNotEmpty) {
+                          String dateTime = dateinputArrival.text;
+                          DateFormat inputFormat = DateFormat('yyyy-MM-dd');
+                          DateTime input = inputFormat.parse(dateTime);
+                          DateTime? departurePickeDate = await showDatePicker(
+                              context: context,
+                              initialDate: input.add(const Duration(days: 1)),
+                              firstDate: input.add(const Duration(days: 1)),
+                              lastDate: DateTime(2100),
+                              initialEntryMode: DatePickerEntryMode.input,
+                              helpText: 'Select departure date');
+
+                          if (departurePickeDate != null &&
+                              departurePickeDate != DateTime.now()) {
+                            final DateFormat formatter =
+                                DateFormat('yyyy-MM-dd');
+                            final String formatted =
+                                formatter.format(departurePickeDate);
+                            // String formatDate = DateFormat.yMd().format(pickedDate);
+                            setState(() {
+                              dateinputDeparture.text = formatted;
+                            });
+                          }
+                        }
+                      }),
                   const SizedBox(height: 30),
                   TextField(
                     controller: _textField4Controller,
