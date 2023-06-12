@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mha_project/screens/hotel-screens/booking-screen/find_room_screen.dart';
-// import 'package:intl/date_symbol_data_local.dart';
-// import 'package:intl/intl_browser.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/detail_screen.dart';
 
 final List<String> roomType = [
   "SINGLE",
@@ -23,10 +24,9 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
+  final user = FirebaseAuth.instance.currentUser!;
   final _textField1Controller = TextEditingController();
   TextEditingController dateinputArrival = TextEditingController();
-  final _textField2Controller = TextEditingController();
-  final _textField3Controller = TextEditingController();
   TextEditingController dateinputDeparture = TextEditingController();
   final _textField4Controller = TextEditingController();
 
@@ -42,16 +42,16 @@ class _BookingScreenState extends State<BookingScreen> {
     return true;
   }
 
-  void _submitCreateRoom(BuildContext context) {
+  void _submitCreateRoom(price, id, dayArrival, dayDeparture) {
     final enteredTextField1 = _textField1Controller.text;
-    final enteredTextField2 = _textField2Controller.text;
-    final enteredTextField3 = _textField3Controller.text;
+    final enteredTextField2 = dateinputArrival.text;
+    final enteredTextField3 = dateinputDeparture.text;
     final enteredTextField4 = _textField4Controller.text;
     final selectedType = _selectedRoomType;
-
-    print(enteredTextField1);
-    print(enteredTextField2);
-    print(enteredTextField3);
+    final Timestamp now = _dateTimeToTimestamp(DateTime.now());
+    // print(enteredTextField1);
+    // print(enteredTextField2);
+    // print(enteredTextField3);
     // print(enteredTextField4);
     // print(selectedType);
 
@@ -82,7 +82,29 @@ class _BookingScreenState extends State<BookingScreen> {
       );
       return;
     }
-
+    try {
+      CollectionReference roomRef =
+          FirebaseFirestore.instance.collection('booking');
+      DocumentReference newRoomRef = roomRef.doc();
+      newRoomRef.set(
+        {
+          'arrival': dayArrival,
+          'customerId': enteredTextField1,
+          'departure': dayDeparture,
+          'price': price,
+          'roomId': id,
+          'type': _selectedRoomType,
+          'bookingDate': now,
+        },
+      );
+      _textField1Controller.clear();
+      dateinputArrival.clear();
+      dateinputDeparture.clear();
+      _textField4Controller.clear();
+      FocusScope.of(context).unfocus();
+    } on FirebaseAuthException catch (error) {
+      print(error);
+    }
     // Navigator.push(
     //     context,
     //     MaterialPageRoute(
@@ -92,6 +114,149 @@ class _BookingScreenState extends State<BookingScreen> {
     //             dateDeparture: enteredTextField3,
     //             price: enteredTextField4,
     //             roomType: selectedType)));
+  }
+
+  void findBooking() async {
+    List<String> roomsId = [];
+    List<String> availabeRooms = [];
+    final String guestId = _textField1Controller.text;
+    int bookingPrice = int.parse(_textField4Controller.text);
+    final data = await firestoreRef
+        .collection('room')
+        .where('userId', isEqualTo: user.uid)
+        .where('type', isEqualTo: _selectedRoomType)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        if (int.parse(doc['price']) < bookingPrice) {
+          String id = doc.id;
+          roomsId.add(id);
+        }
+      });
+    });
+    for (var i = 0; i < roomsId.length; i++) {
+      await firestoreRef
+          .collection('booking')
+          .where('roomId', isEqualTo: roomsId[i])
+          .get()
+          .then((QuerySnapshot snapshot) {
+        snapshot.docs.forEach((doc) {
+          if (checkStatus(roomsId[i]) == 'Available') {
+            DateTime dateBookingArrival =
+                DateFormat("yyyy-MM-dd").parse(dateinputArrival.text);
+            DateTime dateBookingDeparture =
+                DateFormat("yyyy-MM-dd").parse(dateinputDeparture.text);
+            Timestamp convertBookingArrival =
+                _dateTimeToTimestamp(dateBookingArrival);
+            Timestamp convertBookingDeparture =
+                _dateTimeToTimestamp(dateBookingDeparture);
+            // _submitCreateRoom(bookingPrice, roomsId[i], convertBookingArrival,
+            //     convertBookingDeparture);
+            String availabeRoomsId = roomsId[i];
+            if (!availabeRooms.contains(availabeRoomsId)) {
+              availabeRooms.add(availabeRoomsId);
+            }
+          }
+        });
+      });
+      await firestoreRef
+          .collection('booking')
+          .where('roomId', isNotEqualTo: roomsId[i])
+          .get()
+          .then((QuerySnapshot snapshot) {
+        snapshot.docs.forEach((doc) {
+          String availabeRoomsIdWithoutDate = roomsId[i];
+          if (!availabeRooms.contains(availabeRoomsIdWithoutDate)) {
+            availabeRooms.add(availabeRoomsIdWithoutDate);
+          }
+        });
+      });
+    }
+    DateTime dateBookingArrival =
+        DateFormat("yyyy-MM-dd").parse(dateinputArrival.text);
+    DateTime dateBookingDeparture =
+        DateFormat("yyyy-MM-dd").parse(dateinputDeparture.text);
+    Timestamp convertBookingArrival = _dateTimeToTimestamp(dateBookingArrival);
+    Timestamp convertBookingDeparture =
+        _dateTimeToTimestamp(dateBookingDeparture);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FindRoomScreen(
+                roomId: availabeRooms,
+                guestId: guestId,
+                dateArrival: convertBookingArrival,
+                dateDeparture: convertBookingDeparture,
+                roomPrice: bookingPrice,
+                roomType: _selectedRoomType)));
+  }
+  // FindRoomScreen(roomId: availabeRooms, gu guestId, convertBookingArrival, convertBookingDeparture, bookingPrice, _selectedRoomType)
+
+  Future<DateTime> getDateArrival(roomId) async {
+    Timestamp arrival, departure;
+    late DateTime dateOfArrival;
+    // , dateOfDeparture;
+    final data = await firestoreRef
+        .collection('booking')
+        .where('roomId', isEqualTo: roomId)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        arrival = doc['arrival'];
+        dateOfArrival = arrival.toDate();
+        // departure = doc['departure'];
+        // dateOfDeparture = departure.toDate();
+      });
+    });
+    return dateOfArrival;
+  }
+
+  Future<DateTime> getDateDeparture(String roomId) async {
+    Timestamp arrival, departure;
+    late DateTime dateOfDeparture;
+    // , dateOfDeparture;
+    final data = await firestoreRef
+        .collection('booking')
+        .where('roomId', isEqualTo: roomId)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        // arrival = doc['arrival'];
+        // dateOfArrival = arrival.toDate();
+        departure = doc['departure'];
+        dateOfDeparture = departure.toDate();
+      });
+    });
+    return dateOfDeparture;
+  }
+
+  Future<String> checkStatus(String roomId) async {
+    // final now = DateTime.now();
+    DateTime dateCheckBookingArrival =
+        DateFormat("yyyy-MM-dd").parse(dateinputArrival.text);
+    DateTime dateCheckBookingDeparture =
+        DateFormat("yyyy-MM-dd").parse(dateinputDeparture.text);
+    DateTime dateOfArrival = await getDateArrival(roomId);
+    DateTime dateOfDeparture = await getDateDeparture(roomId);
+    // print(dateOfArrival);
+    // print(dateOfDeparture);
+    if (dateCheckBookingArrival.compareTo(dateOfArrival) > 0 &&
+        dateCheckBookingDeparture.compareTo(dateOfDeparture) < 0) {
+      return 'Not available';
+    } else if (dateCheckBookingArrival.compareTo(dateOfDeparture) < 0 &&
+        dateCheckBookingArrival.compareTo(dateOfArrival) > 0) {
+      return 'Not available';
+    } else if (dateCheckBookingDeparture.compareTo(dateOfArrival) > 0 &&
+        (dateCheckBookingDeparture.compareTo(dateOfDeparture) < 0)) {
+      return 'Not available';
+    } else {
+      return 'Available';
+    }
+  }
+
+  Timestamp _dateTimeToTimestamp(DateTime dateTime) {
+    return Timestamp.fromMillisecondsSinceEpoch(
+        dateTime.millisecondsSinceEpoch);
   }
 
   @override
@@ -338,7 +503,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
                       onPressed: () {
-                        _submitCreateRoom(context);
+                        findBooking();
                       },
                       child: const Text(
                         'LOOK FOR A ROOM',

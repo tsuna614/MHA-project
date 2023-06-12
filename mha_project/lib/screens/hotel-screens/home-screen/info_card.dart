@@ -83,7 +83,7 @@ class _InfoCardState extends State<InfoCard> {
       margin: const EdgeInsets.only(top: 100),
       child: Container(
         padding: const EdgeInsets.all(15),
-        width: 400,
+        margin: EdgeInsets.only(left: 10, right: 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
