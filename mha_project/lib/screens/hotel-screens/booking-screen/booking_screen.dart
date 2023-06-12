@@ -49,9 +49,9 @@ class _BookingScreenState extends State<BookingScreen> {
     final enteredTextField4 = _textField4Controller.text;
     final selectedType = _selectedRoomType;
 
-    // print(enteredTextField1);
-    // print(enteredTextField2);
-    // print(enteredTextField3);
+    print(enteredTextField1);
+    print(enteredTextField2);
+    print(enteredTextField3);
     // print(enteredTextField4);
     // print(selectedType);
 
