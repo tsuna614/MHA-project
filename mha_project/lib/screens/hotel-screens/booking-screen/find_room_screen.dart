@@ -4,9 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/booking-screen/booking_card.dart';
 
 class FindRoomScreen extends StatefulWidget {
-  FindRoomScreen({super.key, required this.roomId});
+  FindRoomScreen(
+      {super.key,
+      required this.roomId,
+      required this.guestId,
+      required this.dateArrival,
+      required this.dateDeparture,
+      required this.roomPrice,
+      required this.roomType});
   final List<String> roomId;
-
+  final String guestId;
+  final Timestamp dateArrival, dateDeparture;
+  final int roomPrice;
+  final String roomType;
   @override
   State<FindRoomScreen> createState() => _FindRoomScreenState();
 }
@@ -20,7 +30,7 @@ class _FindRoomScreenState extends State<FindRoomScreen> {
 
   void viewCard() async {
     for (var i = 0; i < widget.roomId.length; i++) {
-      final doc_id = await firestoreRef
+      await firestoreRef
           .collection('room')
           .doc(widget.roomId[i])
           .snapshots()
@@ -28,14 +38,17 @@ class _FindRoomScreenState extends State<FindRoomScreen> {
         if (doc_id.exists) {
           setState(() {
             bookingCards.add(BookingCard(
-                parameter1: doc_id['address'],
-                parameter2: doc_id['floor'],
-                parameter3: doc_id['type'],
-                parameter4: doc_id['beds'],
-                parameter5: doc_id['price'],
+                roomAddress: doc_id['address'],
+                roomPrice: int.parse(doc_id['price']),
+                roomType: doc_id['type'],
+                dateArrival: widget.dateArrival,
+                dateDeparture: widget.dateDeparture,
+                guestId: widget.guestId,
                 userId: doc_id['userId'],
                 docId: doc_id.id));
             print(bookingCards);
+            print(doc_id['address']);
+            print(doc_id['type']);
           });
         } else if (!doc_id.exists) {
           print('Document not exit');
