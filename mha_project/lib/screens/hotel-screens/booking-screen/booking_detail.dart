@@ -24,6 +24,7 @@ class BookingDetail extends StatefulWidget {
 }
 
 class _BookingDetailState extends State<BookingDetail> {
+  final user = FirebaseAuth.instance.currentUser!;
   String converTimeStampToString(date) {
     Timestamp originTime;
     late DateTime dateConvert;
@@ -55,6 +56,7 @@ class _BookingDetailState extends State<BookingDetail> {
           'roomId': id,
           'type': typeOfRoom,
           'bookingDate': now,
+          'userId': user.uid,
         },
       );
       FocusScope.of(context).unfocus();
