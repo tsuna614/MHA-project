@@ -20,12 +20,23 @@ class ReportCard extends StatefulWidget {
 }
 
 class _ReportCardState extends State<ReportCard> {
-  var numberOfIncome = 0.0;
+  double numberOfIncome = 0.0;
   var numberOfRevenue;
   var numberOfOccupancy;
   var numberOfGuests;
 
   // bool isBookingToday() {}
+
+  DateTime _timestampToDateTime(Timestamp bookingDate) {
+    return DateTime.fromMillisecondsSinceEpoch(
+        bookingDate.millisecondsSinceEpoch);
+  }
+
+  bool _isSameDate(DateTime date1, DateTime date2) {
+    return date1.day == date2.day &&
+        date1.month == date2.month &&
+        date1.year == date2.year;
+  }
 
   void getReportData() {
     firestoreRef
@@ -34,11 +45,21 @@ class _ReportCardState extends State<ReportCard> {
         .get()
         .then((QuerySnapshot snapshot) {
       snapshot.docs.forEach((doc) {
-        if (doc['bookingDate'].isDateEqual(DateTime.now())) {
-          numberOfIncome += double.parse(doc['price']);
+        DateTime bookingDate = _timestampToDateTime(doc['bookingDate']);
+        if (_isSameDate(bookingDate, DateTime.now())) {
+          setState(() {
+            numberOfIncome += doc['price'];
+          });
         }
       });
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getReportData();
   }
 
   @override
