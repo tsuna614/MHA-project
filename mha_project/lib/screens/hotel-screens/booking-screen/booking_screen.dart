@@ -44,6 +44,7 @@ class _BookingScreenState extends State<BookingScreen> {
   void findBooking() async {
     List<String> roomsId = [];
     List<String> availabeRooms = [];
+    List<String> notAvailableRooms = [];
     final String guestId = _textField1Controller.text;
     // final int bookingPrice = int.parse(_textField4Controller.text);
     final int bookingPrice;
@@ -97,8 +98,7 @@ class _BookingScreenState extends State<BookingScreen> {
       });
     });
     final snapshot =
-        await FirebaseFirestore.instance.collection('collection name').get();
-
+        await FirebaseFirestore.instance.collection('booking').get();
     if (snapshot.size == 0) {
       for (var i = 0; i < roomsId.length; i++) {
         String temp = roomsId[i];
@@ -111,15 +111,19 @@ class _BookingScreenState extends State<BookingScreen> {
             .where('roomId', isEqualTo: roomsId[i])
             .get()
             .then((QuerySnapshot snapshot) {
-          snapshot.docs.forEach((doc) {
-            if (checkStatus(roomsId[i]) == 'Available') {
+          snapshot.docs.forEach((doc) async {
+            if (await checkStatus(roomsId[i]) == 'Available') {
               String availabeRoomsId = roomsId[i];
               if (!availabeRooms.contains(availabeRoomsId)) {
                 availabeRooms.add(availabeRoomsId);
               }
+            } else {
+              notAvailableRooms.add(roomsId[i]);
             }
           });
         });
+      }
+      for (var i = 0; i < roomsId.length; i++) {
         await firestoreRef
             .collection('booking')
             .where('roomId', isNotEqualTo: roomsId[i])
@@ -127,7 +131,8 @@ class _BookingScreenState extends State<BookingScreen> {
             .then((QuerySnapshot snapshot) {
           snapshot.docs.forEach((doc) {
             String availabeRoomsIdWithoutDate = roomsId[i];
-            if (!availabeRooms.contains(availabeRoomsIdWithoutDate)) {
+            if (!availabeRooms.contains(availabeRoomsIdWithoutDate) &&
+                !notAvailableRooms.contains(availabeRoomsIdWithoutDate)) {
               availabeRooms.add(availabeRoomsIdWithoutDate);
             }
           });
@@ -164,7 +169,7 @@ class _BookingScreenState extends State<BookingScreen> {
     Timestamp arrival, departure;
     late DateTime dateOfArrival;
     // , dateOfDeparture;
-    final data = await firestoreRef
+    await firestoreRef
         .collection('booking')
         .where('roomId', isEqualTo: roomId)
         .get()
@@ -183,7 +188,7 @@ class _BookingScreenState extends State<BookingScreen> {
     Timestamp arrival, departure;
     late DateTime dateOfDeparture;
     // , dateOfDeparture;
-    final data = await firestoreRef
+    await firestoreRef
         .collection('booking')
         .where('roomId', isEqualTo: roomId)
         .get()
@@ -201,27 +206,22 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<String> checkStatus(String roomId) async {
     // final now = DateTime.now();
     DateTime dateCheckBookingArrival =
-        DateFormat("yyyy-MM-dd hh:mm:ss").parse(dateinputArrival.text);
+        DateFormat("yyyy-MM-dd").parse(dateinputArrival.text);
     DateTime dateCheckBookingDeparture =
-        DateFormat("yyyy-MM-dd hh:mm:ss").parse(dateinputDeparture.text);
+        DateFormat("yyyy-MM-dd").parse(dateinputDeparture.text);
     DateTime dateOfArrival = await getDateArrival(roomId);
     DateTime dateOfDeparture = await getDateDeparture(roomId);
-    // print(dateOfArrival);
-    // print(dateOfDeparture);
-    if (dateCheckBookingArrival.compareTo(dateOfArrival) > 0 &&
-        dateCheckBookingDeparture.compareTo(dateOfDeparture) < 0) {
-      return 'Not available';
-    } else if (dateCheckBookingArrival.compareTo(dateOfArrival) < 0 &&
-        dateCheckBookingDeparture.compareTo(dateOfArrival) > 0) {
-      return 'Not available';
-    } else if (dateCheckBookingArrival.compareTo(dateOfDeparture) < 0 &&
-        (dateCheckBookingDeparture.compareTo(dateOfDeparture) > 0)) {
-      return 'Not available';
-    } else if (dateCheckBookingArrival.compareTo(dateOfArrival) < 0 &&
-        dateCheckBookingDeparture.compareTo(dateOfDeparture) > 0) {
+
+    if (dateCheckBookingArrival.compareTo(dateOfArrival) < 0) {
+      if (dateCheckBookingDeparture.compareTo(dateOfArrival) < 0) {
+        return 'Available';
+      }
       return 'Not available';
     } else {
-      return 'Available';
+      if (dateCheckBookingArrival.compareTo(dateOfDeparture) > 0) {
+        return 'Available';
+      }
+      return 'Not available';
     }
   }
 
