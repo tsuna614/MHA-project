@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 late String realHotelName, realHotelAddress, realHotelEmail, realHotelPhone;
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key, required this.setScreen});
+  const ProfileScreen({super.key, required this.setScreen});
 
   final void Function(String identifier) setScreen;
 
@@ -19,38 +19,23 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final firestoreRef = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
-  final TextEditingController _parameter1Controller = TextEditingController();
-  final TextEditingController _parameter2Controller = TextEditingController();
-  final TextEditingController _parameter4Controller = TextEditingController();
-  final TextEditingController _parameter5Controller = TextEditingController();
-
-  void confirm() {
-    setState(() {
-      realHotelName = _parameter1Controller.text;
-      realHotelAddress = _parameter2Controller.text;
-      realHotelEmail = _parameter4Controller.text;
-      realHotelPhone = _parameter5Controller.text;
-    });
-  }
-
   void getHotelName() async {
     DocumentReference documentReference =
         await firestoreRef.collection('users').doc(user.uid);
     await documentReference.get().then((snapshot) {
-      realHotelName = snapshot['hotel_name'];
-      print(realHotelName);
+      setState(() {
+        realHotelName = snapshot['hotel_name'];
+        realHotelPhone = snapshot['hotel_phone'];
+        realHotelAddress = snapshot['hotel_address'];
+        realHotelEmail = snapshot['hotel_email'];
+      });
     });
   }
 
   @override
   void initState() {
     super.initState();
-    confirm();
     getHotelName();
-    realHotelAddress;
-    realHotelEmail;
-    realHotelPhone;
-    realHotelName;
   }
 
   @override
@@ -72,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                _EditScreen(context);
+                editScreen(context);
               },
               icon: Icon(
                 MyFlutterApp.edit,
@@ -92,13 +77,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
                 radius: 55.0,
               ),
               Text(
-                'Nhat Tan Hotel',
+                realHotelName + ' Hotel',
                 style: TextStyle(
                   fontSize: 27.0,
                 ),
@@ -122,7 +107,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 18.0,
                   ),
                   Text(
-                    realHotelPhone = '(123)-456-7891',
+                    realHotelPhone,
+                    // = '(123)-456-7891',
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 18.0,
@@ -146,7 +132,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Flexible(
                       child: Text(
-                    realHotelEmail = 'nhattan276@gmail.com',
+                    realHotelEmail,
+                    // = 'nhattan276@gmail.com',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 18.0,
@@ -193,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: EdgeInsets.only(left: 50.0),
                         child: Text(
-                          realHotelName = 'Nhat Tan Hotel',
+                          realHotelName + ' Hotel',
                           style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -214,8 +201,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20.0, left: 50.0),
                             child: Text(
-                              realHotelAddress =
-                                  'A street, ward B, Thu Duc district, Ho Chi Minh city',
+                              realHotelAddress,
+                              // =
+                              //     'A street, ward B, Thu Duc district, Ho Chi Minh city',
                               style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
@@ -256,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-void _EditScreen(context) {
+void editScreen(context) {
   Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => EditProfileScreen(
             hotelPhone: realHotelPhone,

@@ -89,7 +89,7 @@ class _TabScreenState extends State<TabScreen> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.notifications),
-                label: 'Notification',
+                label: 'Add Service',
               ),
             ],
             currentIndex: _selectedIndex,

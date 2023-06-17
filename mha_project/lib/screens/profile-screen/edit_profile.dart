@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/profile-screen/profile_screen.dart';
-import 'package:mha_project/widgets/main_drawer.dart';
-import 'package:mha_project/widgets/my_flutter_app_icons.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen(
+  const EditProfileScreen(
       {super.key,
       required this.hotelPhone,
       required this.hotelEmail,
       required this.hotelName,
       required this.hotelAddress});
-  String hotelName, hotelAddress, hotelPhone, hotelEmail;
+  final String hotelName, hotelAddress, hotelPhone, hotelEmail;
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  final user = FirebaseAuth.instance.currentUser!;
   final TextEditingController _parameter1Controller = TextEditingController();
   final TextEditingController _parameter2Controller = TextEditingController();
   final TextEditingController _parameter4Controller = TextEditingController();
   final TextEditingController _parameter5Controller = TextEditingController();
+
+  void initState() {
+    _parameter1Controller.text = widget.hotelPhone;
+    _parameter2Controller.text = widget.hotelEmail;
+    _parameter4Controller.text = widget.hotelName;
+    _parameter5Controller.text = widget.hotelAddress;
+    super.initState();
+  }
 
   void EditDialog() {
     showDialog<String>(
@@ -31,7 +39,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    _EditObject();
+                    setState(() {
+                      _EditObject();
+                    });
+
                     // Navigator.of(context).pop(context);
                   },
                   child: Text('Sure'),
@@ -44,11 +55,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ));
   }
 
-  void _EditObject() {
-    widget.hotelPhone = _parameter1Controller.text;
-    widget.hotelEmail = _parameter2Controller.text;
-    widget.hotelName = _parameter4Controller.text;
-    widget.hotelAddress = _parameter5Controller.text;
+  void _EditObject() async {
+    final enterParameter1 = _parameter1Controller.text;
+    final enterParameter2 = _parameter2Controller.text;
+    final enterParameter4 = _parameter4Controller.text;
+    final enterParameter5 = _parameter5Controller.text;
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+      'hotel_phone': enterParameter1,
+      'hotel_email': enterParameter2,
+      'hotel_name': enterParameter4,
+      'hotel_address': enterParameter5,
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Edit sucess!'),
+      ),
+    );
+    print('-----------------------------------------');
     int count = 0;
     Navigator.of(context).popUntil((_) => count++ >= 2);
   }
@@ -60,14 +84,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _parameter4Controller.dispose();
     _parameter5Controller.dispose();
     super.dispose();
-  }
-
-  void initState() {
-    _parameter1Controller.text = widget.hotelPhone;
-    _parameter2Controller.text = widget.hotelEmail;
-    _parameter4Controller.text = widget.hotelName;
-    _parameter5Controller.text = widget.hotelAddress;
-    super.initState();
   }
 
   @override
@@ -96,13 +112,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 CircleAvatar(
                   backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
                   radius: 55.0,
                 ),
                 Text(
-                  'Nhat Tan Hotel',
+                  widget.hotelName,
                   style: TextStyle(
                     fontSize: 27.0,
                   ),
@@ -138,10 +154,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           // contentPadding: EdgeInsets.zero,
                           isDense: true,
                           hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18.0,
-                              letterSpacing: 2.0,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.grey.shade400,
+                            fontSize: 18.0,
+                            letterSpacing: 2.0,
+                          ),
                         ),
                       ),
                     ))
@@ -167,10 +183,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             hintText: widget.hotelEmail,
                             isDense: true,
                             hintStyle: TextStyle(
-                              color: Colors.grey,
+                              color: Colors.grey.shade400,
                               fontSize: 18.0,
                               letterSpacing: 2.0,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -223,9 +238,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             hintText: widget.hotelName,
                             isDense: true,
                             hintStyle: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                fontSize: 16.0, color: Colors.grey.shade400),
                           ),
                         ),
                       )),
@@ -249,12 +262,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: TextField(
                                 controller: _parameter5Controller,
                                 decoration: InputDecoration(
-                                  hintText: widget.hotelAddress,
+                                  hintText: 'Enter your address',
                                   isDense: true,
                                   hintStyle: TextStyle(
                                       fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
+                                      color: Colors.grey.shade400),
                                 ),
                               ),
                             )),
@@ -299,7 +311,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(100.0),
                 onTap: () {
-                  EditDialog();
+                  setState(() {
+                    EditDialog();
+                  });
                 },
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
