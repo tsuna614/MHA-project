@@ -21,9 +21,9 @@ class ReportCard extends StatefulWidget {
 
 class _ReportCardState extends State<ReportCard> {
   double numberOfIncome = 0.0;
-  var numberOfRevenue;
-  var numberOfOccupancy;
-  var numberOfGuests;
+  double numberOfRevenue = 0;
+  int numberOfOccupancy = 0;
+  int numberOfGuests = 0;
 
   // bool isBookingToday() {}
 
@@ -38,8 +38,9 @@ class _ReportCardState extends State<ReportCard> {
         date1.year == date2.year;
   }
 
-  void getReportData() {
-    firestoreRef
+  void getReportData() async {
+    // GET TODAY'S INCOME
+    await firestoreRef
         .collection('booking')
         .where('userId', isEqualTo: user.uid)
         .get()
@@ -49,6 +50,45 @@ class _ReportCardState extends State<ReportCard> {
         if (_isSameDate(bookingDate, DateTime.now())) {
           setState(() {
             numberOfIncome += doc['price'];
+          });
+        }
+      });
+    });
+
+    // GET REVENUE/ROOM
+    double totalRevenue = 0;
+    double numberOfRooms = 0;
+    await firestoreRef
+        .collection('room')
+        .where('userId', isEqualTo: user.uid)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        totalRevenue += double.parse(doc['price']);
+        numberOfRooms++;
+      });
+    });
+    if (numberOfRooms == 0) numberOfRooms = 1;
+    setState(() {
+      numberOfRevenue = totalRevenue / numberOfRooms;
+    });
+
+    // GET OCCUPANCY RATE + IN-HOUSE GROUPS
+    final now = DateTime.now();
+    Timestamp arrival, departure;
+    await firestoreRef
+        .collection('booking')
+        .where('userId', isEqualTo: user.uid)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        arrival = doc['arrival'];
+        departure = doc['departure'];
+        if (now.compareTo(arrival.toDate()) > 0 &&
+            now.compareTo(departure.toDate()) < 0) {
+          setState(() {
+            numberOfOccupancy++;
+            numberOfGuests++;
           });
         }
       });
@@ -77,18 +117,18 @@ class _ReportCardState extends State<ReportCard> {
           break;
         case 'revenue':
           reportCardIcon = Icons.meeting_room_outlined;
-          titleText = 'Avg. revenue/room';
-          mainText = '156.00';
+          titleText = 'Revenue/room';
+          mainText = numberOfRevenue.toStringAsFixed(1);
           break;
         case 'occupancy':
           reportCardIcon = Icons.bed_outlined;
           titleText = 'Occupancy rate';
-          mainText = '6.00';
+          mainText = numberOfOccupancy.toString();
           break;
         case 'guest':
           reportCardIcon = Icons.people;
           titleText = 'In-house groups';
-          mainText = '15';
+          mainText = numberOfGuests.toString();
           break;
       }
     }

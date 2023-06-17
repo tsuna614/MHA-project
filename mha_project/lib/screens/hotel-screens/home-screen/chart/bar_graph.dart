@@ -25,6 +25,18 @@ class MyBarGraph extends StatelessWidget {
       minY: 0,
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
+      titlesData: FlTitlesData(
+        show: true,
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ), // hide top titles
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: getBottomTiles,
+          ),
+        ),
+      ),
       barGroups: data.barData
           .map(
             (data) => BarChartGroupData(
@@ -47,4 +59,41 @@ class MyBarGraph extends StatelessWidget {
           .toList(),
     ));
   }
+}
+
+Widget getBottomTiles(double value, TitleMeta meta) {
+  const style = TextStyle(
+      // color: Colors.grey,
+      // fontWeight: FontWeight.bold,
+      // fontSize: 14,
+      );
+
+  Widget text;
+  switch (value.toInt()) {
+    case 1:
+      text = const Text('Mo', style: style);
+      break;
+    case 2:
+      text = const Text('Tu', style: style);
+      break;
+    case 3:
+      text = const Text('We', style: style);
+      break;
+    case 4:
+      text = const Text('Th', style: style);
+      break;
+    case 5:
+      text = const Text('Fr', style: style);
+      break;
+    case 6:
+      text = const Text('Sa', style: style);
+      break;
+    case 7:
+      text = const Text('Su', style: style);
+      break;
+    default:
+      text = const Text('Null', style: style);
+      break;
+  }
+  return text;
 }
