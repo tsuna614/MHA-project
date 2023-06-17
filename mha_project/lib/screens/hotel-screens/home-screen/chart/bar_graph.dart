@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/home-screen/chart/bar_data.dart';
 
 class MyBarGraph extends StatelessWidget {
-  const MyBarGraph({super.key, required this.weeklyRevenue});
+  const MyBarGraph(
+      {super.key, required this.weeklyRevenue, required this.highestValue});
 
   final List weeklyRevenue;
+  final double highestValue;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class MyBarGraph extends StatelessWidget {
     );
     data.initializeBarData();
     return BarChart(BarChartData(
-      maxY: 50,
+      maxY: highestValue,
       minY: 0,
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
@@ -49,7 +51,7 @@ class MyBarGraph extends StatelessWidget {
                   width: 30,
                   backDrawRodData: BackgroundBarChartRodData(
                     show: true,
-                    toY: 50,
+                    toY: highestValue,
                     color: Colors.grey.withOpacity(0.05),
                   ),
                 ),

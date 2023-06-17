@@ -46,9 +46,9 @@ class _FindRoomScreenState extends State<FindRoomScreen> {
                 guestId: widget.guestId,
                 userId: doc_id['userId'],
                 docId: doc_id.id));
-            print(bookingCards);
-            print(doc_id['address']);
-            print(doc_id['type']);
+            // print(bookingCards);
+            // print(doc_id['address']);
+            // print(doc_id['type']);
           });
         } else if (!doc_id.exists) {
           print('Document not exit');
