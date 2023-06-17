@@ -59,6 +59,15 @@ class _BookingDetailState extends State<BookingDetail> {
           'userId': user.uid,
         },
       );
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Successfully booking a room'),
+        ),
+      );
+      // pop 2 screens
+      int count = 0;
+      Navigator.of(context).popUntil((_) => count++ >= 2);
       FocusScope.of(context).unfocus();
     } on FirebaseAuthException catch (error) {
       print(error);
@@ -192,7 +201,7 @@ class _BookingDetailState extends State<BookingDetail> {
                         widget.dateArrival,
                         widget.dateDeparture,
                         widget.guestId,
-                        widget.guestId);
+                        widget.roomType);
                   },
                   child: Text('CONFIRM'),
                   style: ElevatedButton.styleFrom(

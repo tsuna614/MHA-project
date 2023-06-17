@@ -1,11 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:mha_project/widgets/main_drawer.dart';
 import 'package:mha_project/widgets/my_flutter_app_icons.dart';
+import 'package:mha_project/screens/profile-screen/edit_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key, required this.setScreen});
+late String realHotelName, realHotelAddress, realHotelEmail, realHotelPhone;
+
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({super.key, required this.setScreen});
 
   final void Function(String identifier) setScreen;
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final firestoreRef = FirebaseFirestore.instance;
+  final user = FirebaseAuth.instance.currentUser!;
+  final TextEditingController _parameter1Controller = TextEditingController();
+  final TextEditingController _parameter2Controller = TextEditingController();
+  final TextEditingController _parameter4Controller = TextEditingController();
+  final TextEditingController _parameter5Controller = TextEditingController();
+
+  void confirm() {
+    setState(() {
+      realHotelName = _parameter1Controller.text;
+      realHotelAddress = _parameter2Controller.text;
+      realHotelEmail = _parameter4Controller.text;
+      realHotelPhone = _parameter5Controller.text;
+    });
+  }
+
+  void getHotelName() async {
+    DocumentReference documentReference =
+        await firestoreRef.collection('users').doc(user.uid);
+    await documentReference.get().then((snapshot) {
+      realHotelName = snapshot['hotel_name'];
+      print(realHotelName);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    confirm();
+    getHotelName();
+    realHotelAddress;
+    realHotelEmail;
+    realHotelPhone;
+    realHotelName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +71,9 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0.0,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _EditScreen(context);
+              },
               icon: Icon(
                 MyFlutterApp.edit,
                 color: Colors.black,
@@ -35,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       drawer: MainDrawer(
         onSelectScreen: (identifier) {
-          setScreen(identifier);
+          widget.setScreen(identifier);
         },
         selectedMainScreen: 1,
       ),
@@ -74,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                     width: 18.0,
                   ),
                   Text(
-                    '(123)-456-7891',
+                    realHotelPhone = '(123)-456-7891',
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 18.0,
@@ -96,15 +144,16 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: 18.0,
                   ),
-                  Text(
-                    'nhattan276@gmail.com',
+                  Flexible(
+                      child: Text(
+                    realHotelEmail = 'nhattan276@gmail.com',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 18.0,
                       letterSpacing: 2.0,
                       fontWeight: FontWeight.bold,
                     ),
-                  )
+                  )),
                 ],
               ),
             ]),
@@ -133,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       'Hotel\'s name      :',
                       style: TextStyle(
@@ -144,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
                     Padding(
                         padding: EdgeInsets.only(left: 50.0),
                         child: Text(
-                          'Nhat Tan Hotel',
+                          realHotelName = 'Nhat Tan Hotel',
                           style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -153,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text(
                       'Hotel\'s address:',
                       style: TextStyle(
@@ -165,7 +214,8 @@ class ProfileScreen extends StatelessWidget {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20.0, left: 50.0),
                             child: Text(
-                              'A street, ward B, Thu Duc district, Ho Chi Minh city',
+                              realHotelAddress =
+                                  'A street, ward B, Thu Duc district, Ho Chi Minh city',
                               style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
@@ -204,4 +254,14 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white,
     );
   }
+}
+
+void _EditScreen(context) {
+  Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => EditProfileScreen(
+            hotelPhone: realHotelPhone,
+            hotelAddress: realHotelAddress,
+            hotelEmail: realHotelEmail,
+            hotelName: realHotelName,
+          )));
 }

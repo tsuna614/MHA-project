@@ -48,7 +48,7 @@ class _TabScreenState extends State<TabScreen> {
     HomeScreen(),
     ManageScreen(),
     BookingScreen(),
-    NotificationsScreen()
+    AddServiceScreen(),
   ];
   final _pageController = PageController();
 

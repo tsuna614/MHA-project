@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/edit_screen.dart';
+import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_customer_receipt.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
 
@@ -318,6 +319,33 @@ class _DetailScreenState extends State<DetailScreen> {
                               ),
                             ],
                           )),
+                          if (widget.categoryName == 'customer') ...[
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Container(
+                              width: 140,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ViewReceipt()));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      side: BorderSide(
+                                          color: Colors.blue, width: 2.0)),
+                                ),
+                                child: Text(
+                                  'View',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
+                          ],
                         ]),
                       ),
                     ]),
@@ -370,8 +398,7 @@ void _deleteObject(context, id, categoryName) async {
   );
 
   // pop 2 screens
-  int count = 0;
-  Navigator.of(context).popUntil((_) => count++ >= 2);
+  Navigator.of(context).pop();
 
   // SnackBar(content: const Text('Delete sucess!'));
 }

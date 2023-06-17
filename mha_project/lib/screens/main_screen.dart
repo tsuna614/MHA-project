@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel_tabs_screen.dart';
-import 'package:mha_project/screens/profile_screen.dart';
+import 'package:mha_project/screens/profile-screen/profile_screen.dart';
 import 'package:mha_project/screens/settings_screen.dart';
 import 'package:mha_project/widgets/main_drawer.dart';
 
