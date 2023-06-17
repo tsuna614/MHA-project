@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ReportCard extends StatelessWidget {
+final firestoreRef = FirebaseFirestore.instance;
+final user = FirebaseAuth.instance.currentUser!;
+
+class ReportCard extends StatefulWidget {
   const ReportCard({
     super.key,
     required this.cardColor,
@@ -11,17 +16,64 @@ class ReportCard extends StatelessWidget {
   final String cardType;
 
   @override
+  State<ReportCard> createState() => _ReportCardState();
+}
+
+class _ReportCardState extends State<ReportCard> {
+  double numberOfIncome = 0.0;
+  var numberOfRevenue;
+  var numberOfOccupancy;
+  var numberOfGuests;
+
+  // bool isBookingToday() {}
+
+  DateTime _timestampToDateTime(Timestamp bookingDate) {
+    return DateTime.fromMillisecondsSinceEpoch(
+        bookingDate.millisecondsSinceEpoch);
+  }
+
+  bool _isSameDate(DateTime date1, DateTime date2) {
+    return date1.day == date2.day &&
+        date1.month == date2.month &&
+        date1.year == date2.year;
+  }
+
+  void getReportData() {
+    firestoreRef
+        .collection('booking')
+        .where('userId', isEqualTo: user.uid)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((doc) {
+        DateTime bookingDate = _timestampToDateTime(doc['bookingDate']);
+        if (_isSameDate(bookingDate, DateTime.now())) {
+          setState(() {
+            numberOfIncome += doc['price'];
+          });
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getReportData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     IconData reportCardIcon = Icons.error;
     var titleText = '';
     var mainText = '';
 
     void getType() {
-      switch (cardType) {
+      switch (widget.cardType) {
         case 'income':
           reportCardIcon = Icons.monetization_on_outlined;
           titleText = 'Today\'s income';
-          mainText = '1390.50';
+          mainText = numberOfIncome.toString();
           break;
         case 'revenue':
           reportCardIcon = Icons.meeting_room_outlined;
@@ -35,7 +87,7 @@ class ReportCard extends StatelessWidget {
           break;
         case 'guest':
           reportCardIcon = Icons.people;
-          titleText = 'No. of guests';
+          titleText = 'In-house groups';
           mainText = '15';
           break;
       }
@@ -45,7 +97,7 @@ class ReportCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: cardColor.withOpacity(0.6),
+        color: widget.cardColor.withOpacity(0.6),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Material(

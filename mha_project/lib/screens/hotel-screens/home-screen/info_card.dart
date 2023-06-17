@@ -100,7 +100,7 @@ class _InfoCardState extends State<InfoCard> {
             Column(
               children: [
                 Text(
-                  'Rooms',
+                  'Room',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(height: 2),
@@ -116,7 +116,7 @@ class _InfoCardState extends State<InfoCard> {
             Column(
               children: [
                 Text(
-                  'Services',
+                  'Service',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(height: 2),
@@ -132,7 +132,7 @@ class _InfoCardState extends State<InfoCard> {
             Column(
               children: [
                 Text(
-                  'Employees',
+                  'Employee',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(height: 2),
@@ -148,7 +148,7 @@ class _InfoCardState extends State<InfoCard> {
             Column(
               children: [
                 Text(
-                  'Customers',
+                  'Guest',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(height: 2),
