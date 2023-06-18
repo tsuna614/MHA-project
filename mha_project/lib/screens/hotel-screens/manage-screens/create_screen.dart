@@ -245,6 +245,16 @@ class _CreateScreenState extends State<CreateScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _textField1Controller.dispose();
+    _textField2Controller.dispose();
+    _textField3Controller.dispose();
+    _textField4Controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var appBarTitle;
     var textField1HintText;

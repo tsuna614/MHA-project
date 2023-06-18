@@ -46,6 +46,7 @@ class _BookingScreenState extends State<BookingScreen> {
     List<String> availabeRooms = [];
     List<String> notAvailableRooms = [];
     final String guestId = _textField1Controller.text;
+    final navigator = Navigator.of(context);
     // final int bookingPrice = int.parse(_textField4Controller.text);
     final int bookingPrice;
     if (_textField4Controller.text.trim().isEmpty) {
@@ -84,7 +85,7 @@ class _BookingScreenState extends State<BookingScreen> {
       return;
     } // throw error when haven't entered fields
 
-    final data = await firestoreRef
+    await firestoreRef
         .collection('room')
         .where('userId', isEqualTo: user.uid)
         .where('type', isEqualTo: _selectedRoomType)
@@ -146,22 +147,25 @@ class _BookingScreenState extends State<BookingScreen> {
     Timestamp convertBookingArrival = _dateTimeToTimestamp(dateBookingArrival);
     Timestamp convertBookingDeparture =
         _dateTimeToTimestamp(dateBookingDeparture);
-    setState(() {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => FindRoomScreen(
-                  roomId: availabeRooms,
-                  guestId: guestId,
-                  dateArrival: convertBookingArrival,
-                  dateDeparture: convertBookingDeparture,
-                  roomPrice: bookingPrice,
-                  roomType: _selectedRoomType)));
-    });
+
+    // print(availabeRooms);
+    // print(guestId);
+    // print(convertBookingArrival);
+    // print(convertBookingDeparture);
+    // print(bookingPrice);
+    // print(_selectedRoomType);
+
+    navigator.push(MaterialPageRoute(
+        builder: (context) => FindRoomScreen(
+            roomIdList: availabeRooms,
+            guestId: guestId,
+            dateArrival: convertBookingArrival,
+            dateDeparture: convertBookingDeparture,
+            roomPrice: bookingPrice,
+            roomType: _selectedRoomType)));
 
     _textField1Controller.clear();
-    _textField4Controller
-        .clear(); // show SnackBar that room was created successfully and clear the TextField
+    _textField4Controller.clear();
   }
   // FindRoomScreen(roomId: availabeRooms, gu guestId, convertBookingArrival, convertBookingDeparture, bookingPrice, _selectedRoomType)
 
