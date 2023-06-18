@@ -28,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
           appBarTitle = 'BOOKING';
           break;
         case 3:
-          appBarTitle = 'NOTIFICATIONS';
+          appBarTitle = 'BOOK SERVICE';
           break;
         default:
           break;
@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
               title: Text(
                 appBarTitle,
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 25,
                   letterSpacing: 5.0,
                   fontWeight: FontWeight.bold,
                 ),

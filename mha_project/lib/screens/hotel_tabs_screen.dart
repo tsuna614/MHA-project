@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mha_project/screens/hotel-screens/booking-screen/booking_screen.dart';
 import 'package:mha_project/screens/hotel-screens/home-screen/home_screen.dart';
-import 'package:mha_project/screens/hotel-screens/notification-screen/notifications_screen.dart';
+import 'package:mha_project/screens/hotel-screens/service-booking-screen/service_booking_screen.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/manage_screen.dart';
 
 class TabScreen extends StatefulWidget {
@@ -88,8 +88,8 @@ class _TabScreenState extends State<TabScreen> {
                 label: 'Booking',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Notification',
+                icon: Icon(Icons.dining_rounded),
+                label: 'Service',
               ),
             ],
             currentIndex: _selectedIndex,
