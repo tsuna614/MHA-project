@@ -63,6 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final enterParameter2 = _parameter2Controller.text;
     final enterParameter4 = _parameter4Controller.text;
     final enterParameter5 = _parameter5Controller.text;
+    Navigator.pop(context, 'Returned');
     await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
       'hotel_phone': enterParameter1,
       'hotel_email': enterParameter2,
@@ -77,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
     print('-----------------------------------------');
     int count = 0;
-    Navigator.of(context).popUntil((_) => count++ >= 2);
+    // Navigator.of(context).popUntil((_) => count++ >= 2);
   }
 
   @override
@@ -315,7 +316,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 borderRadius: BorderRadius.circular(100.0),
                 onTap: () {
                   setState(() {
-                    EditDialog();
+                    _EditObject();
                   });
                 },
                 child: Padding(

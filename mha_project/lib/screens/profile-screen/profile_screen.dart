@@ -38,12 +38,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void editScreen(context) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => EditProfileScreen(
-            hotelPhone: realHotelPhone,
-            hotelAddress: realHotelAddress,
-            hotelEmail: realHotelEmail,
-            hotelName: realHotelName)));
+    // final result = await Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => EditProfileScreen(
+    //         hotelPhone: realHotelPhone,
+    //         hotelAddress: realHotelAddress,
+    //         hotelEmail: realHotelEmail,
+    //         hotelName: realHotelName)));
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EditProfileScreen(
+              hotelPhone: realHotelPhone,
+              hotelEmail: realHotelEmail,
+              hotelName: realHotelName,
+              hotelAddress: realHotelAddress)),
+    );
+    if (result == "Returned") {
+      setState(() {
+        getHotelName();
+      });
+    }
   }
 
   @override
