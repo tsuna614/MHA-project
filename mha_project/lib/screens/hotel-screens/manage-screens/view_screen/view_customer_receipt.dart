@@ -67,8 +67,11 @@ class _ViewReceiptState extends State<ViewReceipt> {
         elevation: 0,
       ),
       body: Container(
-        child: ListView(
-          children: receiptsBookingCards,
+        child: ListView.builder(
+          itemCount: receiptsBookingCards.length,
+          itemBuilder: ((context, index) {
+            return receiptsBookingCards[index];
+          }),
         ),
       ),
     );

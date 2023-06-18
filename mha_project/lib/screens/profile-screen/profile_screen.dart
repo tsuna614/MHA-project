@@ -244,12 +244,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-void editScreen(context) {
-  Navigator.of(context).push(MaterialPageRoute(
+void editScreen(context) async {
+  await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => EditProfileScreen(
-            hotelPhone: realHotelPhone,
-            hotelAddress: realHotelAddress,
-            hotelEmail: realHotelEmail,
-            hotelName: realHotelName,
-          )));
+          hotelPhone: realHotelPhone,
+          hotelAddress: realHotelAddress,
+          hotelEmail: realHotelEmail,
+          hotelName: realHotelName)));
 }

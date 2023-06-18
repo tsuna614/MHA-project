@@ -327,12 +327,17 @@ class _DetailScreenState extends State<DetailScreen> {
                               width: 140,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => ViewReceipt(
-                                            customerId: widget.parameter1,
-                                            customerName: widget.parameter2,
-                                            customerType: widget.parameter3,
-                                          )));
+                                  setState(() {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => ViewReceipt(
+                                                  customerId: widget.parameter1,
+                                                  customerName:
+                                                      widget.parameter2,
+                                                  customerType:
+                                                      widget.parameter3,
+                                                )));
+                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue,
