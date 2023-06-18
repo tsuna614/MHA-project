@@ -133,7 +133,6 @@ class _MyBarChartState extends State<MyBarChart> {
 
     highestValue = findHighestValue(day1Value, day2Value, day3Value, day4Value,
         day5Value, day6Value, day7Value);
-    print(highestValue);
   }
 
   @override

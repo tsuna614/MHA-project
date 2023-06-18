@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 final _firebase = FirebaseAuth.instance;
 final firestoreRef = FirebaseFirestore.instance;
 final user = FirebaseAuth.instance.currentUser!;
-late String hotel_name, hotel_email, hotel_image;
 
 class MainDrawer extends StatefulWidget {
   const MainDrawer(
@@ -22,13 +21,17 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
+  String hotelName = '';
+  String hotelEmail = '';
+  String hotelImage = '';
+
   void getHotelInformation() async {
-    final data = await firestoreRef.collection('users').doc(user.uid);
+    final data = firestoreRef.collection('users').doc(user.uid);
     await data.get().then((snapshot) {
       setState(() {
-        hotel_name = snapshot['hotel_name'];
-        hotel_email = snapshot['hotel_email'];
-        hotel_image = snapshot['image_url'];
+        hotelName = snapshot['hotel_name'];
+        hotelEmail = snapshot['hotel_email'];
+        hotelImage = snapshot['image_url'];
       });
     });
   }
@@ -60,7 +63,7 @@ class _MainDrawerState extends State<MainDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(hotel_image),
+                    backgroundImage: NetworkImage(hotelImage),
 
                     // AssetImage('assets/images/hotel_avatar.jpg'),
                     radius: 50.0,
@@ -69,10 +72,10 @@ class _MainDrawerState extends State<MainDrawer> {
                     height: 10,
                   ),
                   Text(
-                    hotel_name + ' Hotel',
+                    '$hotelName + Hotel',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text(hotel_email),
+                  Text(hotelEmail),
                 ],
               ),
             ),

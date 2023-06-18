@@ -5,12 +5,6 @@ import 'package:mha_project/screens/profile-screen/edit_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-late String realHotelName,
-    realHotelAddress,
-    realHotelEmail,
-    realHotelPhone,
-    realHotelImage;
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.setScreen});
 
@@ -21,6 +15,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String realHotelName = '';
+  String realHotelAddress = '';
+  String realHotelEmail = '';
+  String realHotelPhone = '';
+  String realHotelImage = '';
+
   final firestoreRef = FirebaseFirestore.instance;
   final user = FirebaseAuth.instance.currentUser!;
   void getHotelName() async {
@@ -35,6 +35,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         realHotelImage = snapshot['image_url'];
       });
     });
+  }
+
+  void editScreen(context) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => EditProfileScreen(
+            hotelPhone: realHotelPhone,
+            hotelAddress: realHotelAddress,
+            hotelEmail: realHotelEmail,
+            hotelName: realHotelName)));
   }
 
   @override
@@ -247,13 +256,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.white,
     );
   }
-}
-
-void editScreen(context) async {
-  await Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => EditProfileScreen(
-          hotelPhone: realHotelPhone,
-          hotelAddress: realHotelAddress,
-          hotelEmail: realHotelEmail,
-          hotelName: realHotelName)));
 }

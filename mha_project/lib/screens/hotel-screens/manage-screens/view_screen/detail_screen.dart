@@ -86,16 +86,12 @@ class _DetailScreenState extends State<DetailScreen> {
     final now = DateTime.now();
     DateTime dateOfArrival = await getDateArrival(roomId);
     DateTime dateOfDeparture = await getDateDeparture(roomId);
-    print(dateOfArrival);
-    print(dateOfDeparture);
     if (now.compareTo(dateOfArrival) > 0 &&
         now.compareTo(dateOfDeparture) < 0) {
-      print('Not available');
       setState(() {
         isAvailable = false;
       });
     } else {
-      print('Available');
       setState(() {
         isAvailable = true;
       });
