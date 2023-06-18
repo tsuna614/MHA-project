@@ -23,7 +23,7 @@ class MyBarGraph extends StatelessWidget {
     );
     data.initializeBarData();
     return BarChart(BarChartData(
-      maxY: highestValue,
+      maxY: highestValue != 0 ? highestValue : 100,
       minY: 0,
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
@@ -51,8 +51,8 @@ class MyBarGraph extends StatelessWidget {
                   width: 30,
                   backDrawRodData: BackgroundBarChartRodData(
                     show: true,
-                    toY: highestValue,
-                    color: Colors.grey.withOpacity(0.05),
+                    toY: highestValue != 0 ? highestValue : 100,
+                    color: Colors.grey.withOpacity(0.03),
                   ),
                 ),
               ],

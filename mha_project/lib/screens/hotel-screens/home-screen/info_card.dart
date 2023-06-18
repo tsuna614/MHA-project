@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
-final user = FirebaseAuth.instance.currentUser!;
+// final user = FirebaseAuth.instance.currentUser!;
 
 class InfoCard extends StatefulWidget {
   const InfoCard({super.key});
@@ -18,6 +18,8 @@ class _InfoCardState extends State<InfoCard> {
   var numberOfEmployees = 0;
   var numberOfCustomers = 0;
   void getInfoDetails() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    print(user.uid);
     // get number of rooms
     await firestoreRef
         .collection('room')

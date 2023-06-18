@@ -5,7 +5,6 @@ import 'package:mha_project/screens/hotel-screens/home-screen/chart/bar_graph.da
 import 'package:intl/intl.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
-final user = FirebaseAuth.instance.currentUser!;
 
 class MyBarChart extends StatefulWidget {
   MyBarChart({super.key});
@@ -63,6 +62,7 @@ class _MyBarChartState extends State<MyBarChart> {
   }
 
   void getLastWeekRevenue() async {
+    final user = FirebaseAuth.instance.currentUser!;
     DateTime now = DateTime.now();
     String currentDayOfWeek = DateFormat('EEEE').format(now);
     switch (currentDayOfWeek) {

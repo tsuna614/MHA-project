@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final firestoreRef = FirebaseFirestore.instance;
-final user = FirebaseAuth.instance.currentUser!;
 
 class ReportCard extends StatefulWidget {
   const ReportCard({
@@ -39,6 +38,8 @@ class _ReportCardState extends State<ReportCard> {
   }
 
   void getReportData() async {
+    final user = FirebaseAuth.instance.currentUser!;
+
     // GET TODAY'S INCOME
     await firestoreRef
         .collection('booking')
