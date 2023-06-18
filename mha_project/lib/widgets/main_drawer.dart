@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 final _firebase = FirebaseAuth.instance;
+final firestoreRef = FirebaseFirestore.instance;
+final user = FirebaseAuth.instance.currentUser!;
+late String hotel_name, hotel_email, hotel_image;
 
-class MainDrawer extends StatelessWidget {
+class MainDrawer extends StatefulWidget {
   const MainDrawer(
       {super.key,
       required this.onSelectScreen,
@@ -12,6 +16,28 @@ class MainDrawer extends StatelessWidget {
   final void Function(String identifier) onSelectScreen;
 
   final int selectedMainScreen;
+
+  @override
+  State<MainDrawer> createState() => _MainDrawerState();
+}
+
+class _MainDrawerState extends State<MainDrawer> {
+  void getHotelInformation() async {
+    final data = await firestoreRef.collection('users').doc(user.uid);
+    await data.get().then((snapshot) {
+      setState(() {
+        hotel_name = snapshot['hotel_name'];
+        hotel_email = snapshot['hotel_email'];
+        hotel_image = snapshot['image_url'];
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHotelInformation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +58,27 @@ class MainDrawer extends StatelessWidget {
               //     color: Theme.of(context).colorScheme.primaryContainer),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/hotel_avatar.jpg'),
+                    backgroundImage: NetworkImage(hotel_image),
+
+                    // AssetImage('assets/images/hotel_avatar.jpg'),
                     radius: 50.0,
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'Nhat Tan Hotel',
+                    hotel_name + ' Hotel',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text('nhattan19@gmail.com'),
+                  Text(hotel_email),
                 ],
               ),
             ),
           ),
           Container(
-            color: selectedMainScreen == 0
+            color: widget.selectedMainScreen == 0
                 ? Theme.of(context).primaryColor.withOpacity(0.1)
                 : null,
             child: ListTile(
@@ -68,12 +95,12 @@ class MainDrawer extends StatelessWidget {
                     ),
               ),
               onTap: () {
-                onSelectScreen('hotel');
+                widget.onSelectScreen('hotel');
               },
             ),
           ),
           Container(
-            color: selectedMainScreen == 1
+            color: widget.selectedMainScreen == 1
                 ? Theme.of(context).primaryColor.withOpacity(0.1)
                 : null,
             child: ListTile(
@@ -90,12 +117,12 @@ class MainDrawer extends StatelessWidget {
                     ),
               ),
               onTap: () {
-                onSelectScreen('profile');
+                widget.onSelectScreen('profile');
               },
             ),
           ),
           Container(
-            color: selectedMainScreen == 2
+            color: widget.selectedMainScreen == 2
                 ? Theme.of(context).primaryColor.withOpacity(0.1)
                 : null,
             child: ListTile(
@@ -112,7 +139,7 @@ class MainDrawer extends StatelessWidget {
                     ),
               ),
               onTap: () {
-                onSelectScreen('settings');
+                widget.onSelectScreen('settings');
               },
             ),
           ),

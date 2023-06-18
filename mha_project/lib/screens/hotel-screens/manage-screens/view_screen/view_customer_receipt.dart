@@ -25,6 +25,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
     await firestoreRef
         .collection('booking')
         .where('customerId', isEqualTo: widget.customerId)
+        .orderBy('departure')
         .get()
         .then((QuerySnapshot snapshot) {
       snapshot.docs.forEach((doc) {
