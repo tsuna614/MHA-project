@@ -72,7 +72,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     height: 10,
                   ),
                   Text(
-                    '$hotelName + Hotel',
+                    '$hotelName Hotel',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(hotelEmail),

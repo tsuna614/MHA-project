@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 55.0,
               ),
               Text(
-                '$realHotelName +  Hotel',
+                '$realHotelName Hotel',
                 style: TextStyle(
                   fontSize: 27.0,
                 ),
@@ -208,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                         padding: EdgeInsets.only(left: 50.0),
                         child: Text(
-                          realHotelName + ' Hotel',
+                          '$realHotelName Hotel',
                           style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
