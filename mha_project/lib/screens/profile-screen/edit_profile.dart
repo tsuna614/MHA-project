@@ -115,13 +115,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: const [
                 CircleAvatar(
                   backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
                   radius: 55.0,
                 ),
                 Text(
-                  widget.hotelName,
+                  '',
                   style: TextStyle(
                     fontSize: 27.0,
                   ),

@@ -5,7 +5,11 @@ import 'package:mha_project/screens/profile-screen/edit_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-late String realHotelName, realHotelAddress, realHotelEmail, realHotelPhone;
+late String realHotelName,
+    realHotelAddress,
+    realHotelEmail,
+    realHotelPhone,
+    realHotelImage;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.setScreen});
@@ -28,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         realHotelPhone = snapshot['hotel_phone'];
         realHotelAddress = snapshot['hotel_address'];
         realHotelEmail = snapshot['hotel_email'];
+        realHotelImage = snapshot['image_url'];
       });
     });
   }
@@ -79,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage('assets/images/hotel_avatar.jpg'),
+                backgroundImage: NetworkImage(realHotelImage),
                 radius: 55.0,
               ),
               Text(
