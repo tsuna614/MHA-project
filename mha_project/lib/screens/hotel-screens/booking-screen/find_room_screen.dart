@@ -71,7 +71,6 @@ class _FindRoomScreenState extends State<FindRoomScreen> {
       //   });
       // });
     }
-    print(widget.roomId.length);
   }
 
   @override

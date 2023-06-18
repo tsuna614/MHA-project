@@ -46,11 +46,44 @@ class _BookingScreenState extends State<BookingScreen> {
     List<String> availabeRooms = [];
     List<String> notAvailableRooms = [];
     final String guestId = _textField1Controller.text;
-    int bookingPrice = int.parse(_textField4Controller.text);
+    // final int bookingPrice = int.parse(_textField4Controller.text);
+    final int bookingPrice;
+    if (_textField4Controller.text.trim().isEmpty) {
+      bookingPrice = 99999;
+    } else {
+      bookingPrice = int.parse(_textField4Controller.text);
+    } // if user haven't entered price, set it to default as 99999
+
     final enteredTextField1 = _textField1Controller.text;
     final enteredTextField2 = dateinputArrival.text;
     final enteredTextField3 = dateinputDeparture.text;
+
     var errorMessage;
+    if (enteredTextField1.trim().isEmpty) {
+      errorMessage = 'Service\'s ID must not be empty.';
+    } else if (enteredTextField2.trim().isEmpty) {
+      errorMessage = 'Date Arrival must not be empty.';
+    } else if (enteredTextField3.trim().isEmpty) {
+      errorMessage = 'Date departure must not be empty';
+    }
+    if (errorMessage != null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Alert'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // close AlertDialog
+                },
+                child: const Text('Close'))
+          ],
+        ),
+      );
+      return;
+    } // throw error when haven't entered fields
+
     final data = await firestoreRef
         .collection('room')
         .where('userId', isEqualTo: user.uid)
@@ -113,40 +146,19 @@ class _BookingScreenState extends State<BookingScreen> {
     Timestamp convertBookingArrival = _dateTimeToTimestamp(dateBookingArrival);
     Timestamp convertBookingDeparture =
         _dateTimeToTimestamp(dateBookingDeparture);
-    if (enteredTextField1.trim().isEmpty) {
-      errorMessage = 'Service\'s ID must not be empty.';
-    } else if (enteredTextField2.trim().isEmpty) {
-      errorMessage = 'Date Arrival must not be empty.';
-    } else if (enteredTextField3.trim().isEmpty) {
-      errorMessage = 'Date departure must not be empty';
-    }
-    if (errorMessage != null) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Alert'),
-          content: Text(errorMessage),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // close AlertDialog
-                },
-                child: const Text('Close'))
-          ],
-        ),
-      );
-      return;
-    }
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => FindRoomScreen(
-                roomId: availabeRooms,
-                guestId: guestId,
-                dateArrival: convertBookingArrival,
-                dateDeparture: convertBookingDeparture,
-                roomPrice: bookingPrice,
-                roomType: _selectedRoomType)));
+    setState(() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FindRoomScreen(
+                  roomId: availabeRooms,
+                  guestId: guestId,
+                  dateArrival: convertBookingArrival,
+                  dateDeparture: convertBookingDeparture,
+                  roomPrice: bookingPrice,
+                  roomType: _selectedRoomType)));
+    });
+
     _textField1Controller.clear();
     _textField4Controller
         .clear(); // show SnackBar that room was created successfully and clear the TextField
@@ -461,8 +473,10 @@ class _BookingScreenState extends State<BookingScreen> {
                         minimumSize: const Size.fromHeight(40),
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () {
-                        findBooking();
+                      onPressed: () async {
+                        setState(() {
+                          findBooking();
+                        });
                       },
                       child: const Text(
                         'LOOK FOR A ROOM',

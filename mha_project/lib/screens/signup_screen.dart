@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:mha_project/screens/profile-screen/profile_screen.dart';
 import 'package:mha_project/widgets/user_image_picker.dart';
+import 'package:mha_project/screens/main_screen.dart';
 
 final _firebase = FirebaseAuth.instance;
 final _firestore = FirebaseFirestore.instance;
@@ -111,7 +112,6 @@ class _SignUpFormState extends State<SignUpForm> {
           'image_url': imageURL,
         },
       );
-
       Navigator.of(context)
           .pop(); // this line only execute when _firebase.createUser is success, otherwise it will skip this line to the FirebaseAuthException
     } on FirebaseAuthException catch (error) {
