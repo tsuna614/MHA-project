@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 55.0,
               ),
               Text(
-                realHotelName + ' Hotel',
+                '$realHotelName +  Hotel',
                 style: TextStyle(
                   fontSize: 27.0,
                 ),
