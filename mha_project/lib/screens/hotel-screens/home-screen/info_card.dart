@@ -17,6 +17,7 @@ class _InfoCardState extends State<InfoCard> {
   var numberOfServices = 0;
   var numberOfEmployees = 0;
   var numberOfCustomers = 0;
+
   void getInfoDetails() async {
     final user = FirebaseAuth.instance.currentUser!;
     print(user.uid);
@@ -86,7 +87,7 @@ class _InfoCardState extends State<InfoCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 90,
       alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 100),
       child: Container(

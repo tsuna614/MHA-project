@@ -43,6 +43,7 @@ dependencies:
   firebase_storage: ^11.2.1
   intl: ^0.18.1
   fl_chart: ^0.62.0
+  firebase_performance: ^0.9.3+17
 
 dev_dependencies:
   flutter_test:

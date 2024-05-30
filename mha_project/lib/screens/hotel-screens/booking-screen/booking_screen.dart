@@ -170,7 +170,7 @@ class _BookingScreenState extends State<BookingScreen> {
   // FindRoomScreen(roomId: availabeRooms, gu guestId, convertBookingArrival, convertBookingDeparture, bookingPrice, _selectedRoomType)
 
   Future<DateTime> getDateArrival(roomId) async {
-    Timestamp arrival, departure;
+    Timestamp arrival;
     late DateTime dateOfArrival;
     // , dateOfDeparture;
     await firestoreRef
@@ -189,7 +189,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Future<DateTime> getDateDeparture(String roomId) async {
-    Timestamp arrival, departure;
+    Timestamp departure;
     late DateTime dateOfDeparture;
     // , dateOfDeparture;
     await firestoreRef

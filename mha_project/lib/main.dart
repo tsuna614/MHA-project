@@ -4,10 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mha_project/screens/loading_screen.dart';
 import 'package:mha_project/screens/main_screen.dart';
+import 'package:mha_project/test.dart';
 import 'firebase_options.dart';
 
 import 'package:mha_project/screens/auth_screen.dart';
-import 'package:mha_project/screens/hotel_tabs_screen.dart';
 
 // final theme = ThemeData(
 //   // useMaterial3: true,
@@ -66,19 +66,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Hotel Management Application',
-        theme: theme,
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const LoadingScreen();
-              }
-              if (snapshot.hasData) {
-                return const MainScreen();
-              }
-              return const AuthScreen();
-            }));
+      debugShowCheckedModeBanner: false,
+      title: 'Hotel Management Application',
+      theme: theme,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          }
+          if (snapshot.hasData) {
+            return const MainScreen();
+          }
+          return const AuthScreen();
+        },
+      ),
+      // home: TestScreen(),
+    );
   }
 }

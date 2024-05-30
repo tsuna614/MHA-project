@@ -16,54 +16,38 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final _form = GlobalKey<FormState>();
   var _isLoading = false;
 
   var _enteredEmail = '';
   var _enteredPassword = '';
 
+  final _form = GlobalKey<FormState>();
+
   void _submit() async {
     final isValid = _form.currentState!.validate();
-
     if (!isValid) {
       return;
     }
-
     _form.currentState!.save();
-
-    // var regBody = {
-    //   "email": _enteredEmail,
-    //   "password": _enteredPassword,
-    // };
-
-    // var response = await http.post(
-    //   Uri.parse(loginURL),
-    //   headers: {"Content-Type": "application/json"},
-    //   body: jsonEncode(regBody),
-    // );
-
-    // var jsonResponse = jsonDecode(response.body);
-
-    // print(jsonResponse['status']);
-
     try {
       setState(() {
         _isLoading = true;
       });
-      // log user in
+      // sign user in after validation
       await _firebase.signInWithEmailAndPassword(
           email: _enteredEmail, password: _enteredPassword);
-      // print(userCredentials);
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? 'Authentication failed.'),
-        ),
-      );
-      setState(() {
-        _isLoading = false;
-      });
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? 'Authentication failed.'),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

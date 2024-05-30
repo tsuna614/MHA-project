@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/edit_screen.dart';
 import 'package:mha_project/screens/hotel-screens/manage-screens/view_screen/view_customer_receipt.dart';
@@ -45,10 +44,10 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<DateTime> getDateArrival(roomId) async {
-    Timestamp arrival, departure;
+    Timestamp arrival;
     late DateTime dateOfArrival;
     // , dateOfDeparture;
-    final data = await firestoreRef
+    await firestoreRef
         .collection('booking')
         .where('roomId', isEqualTo: roomId)
         .get()
@@ -64,10 +63,10 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<DateTime> getDateDeparture(String roomId) async {
-    Timestamp arrival, departure;
+    Timestamp departure;
     late DateTime dateOfDeparture;
     // , dateOfDeparture;
-    final data = await firestoreRef
+    await firestoreRef
         .collection('booking')
         .where('roomId', isEqualTo: roomId)
         .get()

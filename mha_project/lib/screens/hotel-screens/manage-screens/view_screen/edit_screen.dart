@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 final List<String> roomType = [
@@ -26,6 +25,7 @@ final List<String> customerType = [
   "National",
 ];
 
+// ignore: must_be_immutable
 class EditScreen extends StatefulWidget {
   EditScreen(
       {super.key,

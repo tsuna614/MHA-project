@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,24 +68,6 @@ class _CreateScreenState extends State<CreateScreen> {
     final enteredTextField3 = _textField3Controller.text;
     final enteredTextField4 = _textField4Controller.text;
 
-    // if (widget.categoryName == 'room') {
-    //   enteredTextField2 = double.tryParse(_textField2Controller.text);
-    //   enteredTextField3 = double.tryParse(_textField3Controller.text);
-    // } else {
-    //   enteredTextField2 = _textField2Controller.text;
-    //   enteredTextField3 = _textField3Controller.text;
-    // }
-    // if (widget.categoryName == 'room' || widget.categoryName == 'service') {
-    //   enteredTextField4 = double.tryParse(_textField4Controller.text);
-    // } else {
-    //   enteredTextField4 = _textField4Controller.text;
-    // }
-
-    // print(enteredTextField1);
-    // print(enteredTextField2);
-    // print(enteredTextField3);
-    // print(enteredTextField4);
-
     var errorMessage;
 
     if (widget.categoryName == 'room') {
@@ -151,14 +135,17 @@ class _CreateScreenState extends State<CreateScreen> {
     }
 
     try {
-      final user = await FirebaseAuth.instance.currentUser!;
+      final user = FirebaseAuth.instance.currentUser!;
       CollectionReference roomRef =
           FirebaseFirestore.instance.collection(widget.categoryName);
       DocumentReference newRoomRef =
           roomRef.doc(); // this will generate a custom id for each new document
 
-      // String newUserID = newRoomRef.id;
-      // print(newUserID);
+      int timeElapsed = 0;
+      Timer timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+        timeElapsed++;
+      });
+
       switch (widget.categoryName) {
         case 'room':
           await newRoomRef.set(
@@ -210,6 +197,10 @@ class _CreateScreenState extends State<CreateScreen> {
           break;
       }
       // store the data on the firebase firestore
+
+      timer.cancel();
+      print(
+          "Successfully created a new ${widget.categoryName} in $timeElapsed ms.");
 
       if (context.mounted) {
         var successMessage = '';

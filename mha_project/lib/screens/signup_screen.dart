@@ -6,9 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:mha_project/screens/profile-screen/profile_screen.dart';
 import 'package:mha_project/widgets/user_image_picker.dart';
-import 'package:mha_project/screens/main_screen.dart';
 
 final _firebase = FirebaseAuth.instance;
 final _firestore = FirebaseFirestore.instance;
@@ -99,8 +97,8 @@ class _SignUpFormState extends State<SignUpForm> {
           .child('user_image')
           .child('${userCredential.user!.uid}.jpg');
       await storageRef.putFile(_selectedImage!);
-      final imageURL = await storageRef
-          .getDownloadURL(); // give url can be used later to display image that was stored in firebase
+      // give url can be used later to display image that was stored in firebase
+      final imageURL = await storageRef.getDownloadURL();
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -112,18 +110,22 @@ class _SignUpFormState extends State<SignUpForm> {
           'image_url': imageURL,
         },
       );
-      Navigator.of(context)
-          .pop(); // this line only execute when _firebase.createUser is success, otherwise it will skip this line to the FirebaseAuthException
+      if (context.mounted) {
+        // this line only execute when _firebase.createUser is success, otherwise it will skip this line to the FirebaseAuthException
+        Navigator.of(context).pop();
+      }
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? 'Authentication failed.'),
-        ),
-      );
-      setState(() {
-        _isLoading = false;
-      });
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? 'Authentication failed.'),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

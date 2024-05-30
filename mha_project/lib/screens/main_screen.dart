@@ -56,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     chosenScreen = TabScreen(
       changeTitle: _changeTitle,
     );
